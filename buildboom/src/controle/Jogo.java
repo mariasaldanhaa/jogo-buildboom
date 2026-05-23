@@ -1,9 +1,12 @@
 package controle;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
@@ -14,9 +17,15 @@ public class Jogo extends JPanel implements Runnable {
 	private int alturaTela=600;
 	private int FPS=45;
 	
+	
 /*A classe Thread é nativa do Java, servindo para executar ações em paralelo,
 como por exemplo renderizar os objetos.*/
 	Thread gameThread;
+	
+	// Variaveis do controle da Tela
+	public int EstadoAtual = 0; // 0 = Menu, 1 = Jogando, 2 = Opções
+	public int opçãoSelecionada = -1; // 0 = Jogar, 1 = Opções, 2 = Sair
+	
 	
 	public Jogo() {
 		this.setPreferredSize(new Dimension(larguraTela,alturaTela));
@@ -24,7 +33,56 @@ como por exemplo renderizar os objetos.*/
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		
+		
+		//Comandos do mouse no incio na tela inicial
+		this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int mx = e.getX();
+                int my = e.getY();
+                
+                if (EstadoAtual == 0) {
+                   
+                    if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+                        EstadoAtual = 1; 
+                    }
+                   
+                    else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
+                        EstadoAtual = 2; 
+                    }
+                 
+                    else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
+                        System.exit(0); 
+                    }
+                }	
+           }
+       });
+		
+		this.addMouseMotionListener(new MouseAdapter() {
+			
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int mx = e.getX();
+                int my = e.getY();
+                
+                if (EstadoAtual == 0) {
+                    if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+                        opçãoSelecionada = 0;
+                    }
+                    else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
+                        opçãoSelecionada = 1; 
+                    }
+                    else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
+                        opçãoSelecionada = 2; 
+                    } 
+                    else {
+                        opçãoSelecionada = -1; 
+                    }
+                }
+            }
+        });
 	}
+
 	public void startGameThread() {
 		gameThread=new Thread(this);
 		gameThread.start();
@@ -108,9 +166,65 @@ como por exemplo renderizar os objetos.*/
 		
 	}
 	//O método paintComponent é do proprio java Swing.
+	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2=(Graphics2D)g;
+
+		
+		//Parte do codigo que muda a tela de acordo com a opção
+		
+		if (EstadoAtual == 0 ) {
+			//Menu inicial
+			desenharMenu(g2);
+		}
+		if (EstadoAtual == 1 ) {
+			//Jogo em sí
+
+		}
+		if (EstadoAtual == 2 ) {
+			//Sair
+			
+		}
+		
 	
+	}
+	private void desenharMenu(Graphics2D g2) {
+	
+		//Caixa Azul no BuilBOOM
+		g2.setColor(Color.BLUE);
+		g2.fillRoundRect(530, 20, 460, 200, 100, 100);
+		
+		//Build BOOM do menu
+		g2.setFont(new Font("Arial", Font.BOLD, 75));
+        g2.setColor(Color.YELLOW);
+        g2.drawString("BuildBOOM", 550, 100);
+		
+        g2.setFont(new Font("Arial", Font.BOLD, 40));
+
+        //Caixa Azul das opções iniciais
+		g2.setColor(Color.BLUE);
+		g2.fillRoundRect(20, 200, 400, 350, 100, 100);
+
+
+
+        // Opções do inicio do jogo
+        int xTexto = 100;
+        g2.setColor(Color.YELLOW);
+        
+        g2.drawString("Começar", xTexto, 300);
+        if (opçãoSelecionada == 0) {
+            g2.drawString(">", xTexto - 40, 300); 
+        }
+        
+        g2.drawString("Opções", xTexto, 400);
+        if (opçãoSelecionada == 1) {
+            g2.drawString(">", xTexto - 40, 400);
+        }
+        
+        g2.drawString("Sair", xTexto, 500);
+        if (opçãoSelecionada == 2) {
+            g2.drawString(">", xTexto - 40, 500);
+        }
 	}
 }

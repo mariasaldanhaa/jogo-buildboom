@@ -18,7 +18,7 @@ public class Main {
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
 		
-		jogo.Iniciar();
+	
 		jogo.startGameThread();
 	}
 }
