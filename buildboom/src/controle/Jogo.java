@@ -20,15 +20,13 @@ public class Jogo extends JPanel implements Runnable {
 	private int alturaTela=600;
 	private int FPS=45;
 
-	
-	
 /*A classe Thread é nativa do Java, servindo para executar ações em paralelo,
 como por exemplo renderizar os objetos.*/
 	Thread gameThread;
 	
 	TelaInicial tInicial;
 	TelaFase tFase;
-	// Variaveis do controle da Tela
+// Variaveis do controle da Tela
 	public int EstadoAtual = 0; // 0 = Menu, 1 = Jogando, 2 = Opções
 	public int opçãoSelecionada = -1; // 0 = Jogar, 1 = Opções, 2 = Sair
 	public int faseAtual=1;
@@ -100,59 +98,6 @@ como por exemplo renderizar os objetos.*/
 		gameThread.start();
 	}
 	
-	
-	public void Iniciar() {
-		String[][] opcoes = { 
-				// opções quaisquer para teste
-				{
-					"Ryzen 3",	
-					"Intel i3",
-					"Athlon"
-				},
-				{
-					"Ryzen 5", 
-					"Intel i5",
-					"Xeon"
-				},
-				{
-					"Ryzen 7",
-					"Intel i7",
-					"Threadripper"
-				}
-		};
-		
-		String[] escolhas = new String[3];
-		Scanner sc = new Scanner(System.in);
-		System.out.println("BuildBOOM iniciado!");
-		
-		for(int i = 0; i < 3; i++) {
-			System.out.printf("Rodada %d\n", i + 1);
-			
-			for(int j = 0; j < 3; j++) {
-				System.out.printf("%d - %s\n", j + 1, opcoes[i][j]);
-			}
-			System.out.printf("\nDigite sua escolha da rodada %d: ", i + 1);
-			int escolha = sc.nextInt();
-			
-			while(escolha < 1 || escolha > 3) {
-				System.out.printf("\nDigite sua escolha novamente da rodada %d: ", i + 1);
-				escolha = sc.nextInt();
-			}
-			
-			escolhas[i] = opcoes[i][escolha - 1];
-		}
-		
-		System.out.println("\nEscolhas do jogador");
-		
-		for(int i = 0; i < 3; i++) {
-			System.out.printf("Rodada %d: opcao %s\n", i + 1, escolhas[i]);
-		}
-		
-		System.out.println("Fim de jogo!");
-		sc.close();
-	}
-
-
 	@Override
 	public void run() {
 		double IntervaloDeDesenho=1000000000/FPS;

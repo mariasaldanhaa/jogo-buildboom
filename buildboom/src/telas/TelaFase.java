@@ -38,4 +38,7 @@ public class TelaFase {
 		g2.fillRoundRect(480, 200,larguraComponente,alturaComponente, 100, 100);
 
 	}
+	public void atualizarFase() {
+		faseAtual+=1;
+	}
 }

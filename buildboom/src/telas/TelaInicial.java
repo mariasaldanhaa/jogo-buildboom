@@ -11,6 +11,9 @@ public class TelaInicial {
 	public TelaInicial(Jogo jg) {
 		this.jg=jg;
 	}
+	public void atualizar() {
+		
+	}
 	public void desenhar(Graphics g2) {
 		//Caixa Azul no BuilBOOM
 		g2.setColor(Color.BLUE);
