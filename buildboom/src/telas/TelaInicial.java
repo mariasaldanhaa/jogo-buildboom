@@ -3,17 +3,60 @@ package telas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import controle.Jogo;
 
-public class TelaInicial {
+public class TelaInicial extends MouseAdapter {
 	Jogo jg;
 	public TelaInicial(Jogo jg) {
 		this.jg=jg;
 	}
-	public void atualizar() {
-		
-	}
+	@Override
+    public void mousePressed(MouseEvent e) {
+        int mx = e.getX();
+        int my = e.getY();
+        
+        // Verifica se o jogo está na tela inicial
+        if (jg.EstadoAtual == 0) {
+            // Clique no botão 1
+            if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+                jg.EstadoAtual = 1; 
+                
+            }
+            // Clique no botão 2
+            else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
+                jg.EstadoAtual = 2; 
+            }
+            // Clique no botão Sair
+            else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
+                System.exit(0); 
+            }
+        }	
+    }
+
+    // Lógica de passar o mouse por cima (hover) movida para cá
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        int mx = e.getX();
+        int my = e.getY();
+        
+        if (jg.EstadoAtual == 0) {
+            if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+                jg.opçãoSelecionada = 0;
+            }
+            else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
+                jg.opçãoSelecionada = 1; 
+            }
+            else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
+                jg.opçãoSelecionada = 2; 
+            } 
+            else {
+                jg.opçãoSelecionada = -1; 
+            }
+        }
+    }
 	public void desenhar(Graphics g2) {
 		//Caixa Azul no BuilBOOM
 		g2.setColor(Color.BLUE);

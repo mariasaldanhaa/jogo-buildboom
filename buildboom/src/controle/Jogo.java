@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 import telas.TelaFase;
+import telas.TelaFinal;
 import telas.TelaInicial;
 
 //A classe jogo é filha da classe JPanel, ou seja, herda os seus métodos e atributos.
@@ -26,10 +27,11 @@ como por exemplo renderizar os objetos.*/
 	
 	TelaInicial tInicial;
 	TelaFase tFase;
+	TelaFinal tFinal;
 // Variaveis do controle da Tela
 	public int EstadoAtual = 0; // 0 = Menu, 1 = Jogando, 2 = Opções
 	public int opçãoSelecionada = -1; // 0 = Jogar, 1 = Opções, 2 = Sair
-	public int faseAtual=1;
+	private int faseAtual=1;
 	
 	public Jogo() {
 		this.setPreferredSize(new Dimension(larguraTela,alturaTela));
@@ -38,60 +40,22 @@ como por exemplo renderizar os objetos.*/
 		this.setFocusable(true);
 		this.tInicial= new TelaInicial(this);
 		this.tFase= new TelaFase(this);
+		this.tFinal=new TelaFinal(this);
 		
-		//Comandos do mouse no incio na tela inicial
-		this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                int mx = e.getX();
-                int my = e.getY();
-                
-                if (EstadoAtual == 0) {
-                   
-                    if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
-                        EstadoAtual = 1; 
-                    }
-                   
-                    else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
-                        EstadoAtual = 2; 
-                    }
-                 
-                    else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
-                        System.exit(0); 
-                    }
-                }	
-           }
-       });
-		
-		this.addMouseMotionListener(new MouseAdapter() {
-			
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                int mx = e.getX();
-                int my = e.getY();
-                
-                if (EstadoAtual == 0) {
-                    if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
-                        opçãoSelecionada = 0;
-                    }
-                    else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
-                        opçãoSelecionada = 1; 
-                    }
-                    else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
-                        opçãoSelecionada = 2; 
-                    } 
-                    else {
-                        opçãoSelecionada = -1; 
-                    }
-                }
-            }
-        });
+		this.addMouseListener(this.tInicial);
+	    this.addMouseMotionListener(this.tInicial);
 	}
 	public int getLarguraTela() {
 		return larguraTela;
 	}
 	public int getAlturaTela() {
 		return alturaTela;
+	}
+	public int getFaseAtual() {
+		return faseAtual;
+	}
+	public void setFaseAtual(int faseAtual) {
+		this.faseAtual=faseAtual;
 	}
 	public void startGameThread() {
 		gameThread=new Thread(this);
@@ -127,8 +91,6 @@ como por exemplo renderizar os objetos.*/
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2=(Graphics2D)g;
-
-		
 		//Parte do codigo que muda a tela de acordo com a opção
 		
 		if (EstadoAtual == 0 ) {
@@ -136,13 +98,28 @@ como por exemplo renderizar os objetos.*/
 			tInicial.desenhar(g2);
 		}
 		if (EstadoAtual == 1 ) {
-			tFase.desenhar(g2);
-
+			mudarParaFase();
+			if(faseAtual<=5)
+				tFase.desenhar(g2);
+			else
+				tFinal.desenhar(g2);
 		}
 		if (EstadoAtual == 2 ) {
 			//Sair
 			
 		}
+	}
+	public void mudarParaFase() {
+	    // Remove os controles da tela inicial
+	    this.removeMouseListener(tInicial);
+	    this.removeMouseMotionListener(tInicial);
+	    
+	    // Altera o estado
+	    this.EstadoAtual = 1;
+	    
+	    // Adiciona os controles da fase
+	    this.addMouseListener(tFase);
+	    this.addMouseMotionListener(tFase);
 	}
 
 }
