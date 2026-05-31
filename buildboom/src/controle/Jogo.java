@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import telas.TelaFase;
 import telas.TelaInicial;
 
+import entidades.*;
+
 //A classe jogo é filha da classe JPanel, ou seja, herda os seus métodos e atributos.
 public class Jogo extends JPanel implements Runnable {
 	//Dimensões
@@ -88,6 +90,7 @@ como por exemplo renderizar os objetos.*/
                 }
             }
         });
+		Iniciar();
 	}
 	public int getLarguraTela() {
 		return larguraTela;
@@ -102,57 +105,116 @@ como por exemplo renderizar os objetos.*/
 	
 	
 	public void Iniciar() {
-		String[][] opcoes = { 
-				// opções quaisquer para teste
-				{
-					"Ryzen 3",	
-					"Intel i3",
-					"Athlon"
-				},
-				{
-					"Ryzen 5", 
-					"Intel i5",
-					"Xeon"
-				},
-				{
-					"Ryzen 7",
-					"Intel i7",
-					"Threadripper"
-				}
-		};
+		// colocando clientes
+		ArrayList<Cliente> clientes = new ArrayList<>();
 		
-		String[] escolhas = new String[3];
+		clientes.add(new Cliente (
+				"Gamer",
+				"Quero um computador para jogos pesados.",
+				"Ryzen 3",
+				"32GB",
+				"750W"
+		));
+		
+		clientes.add(new Cliente (
+				"Senhorinha",
+				"Quero acessar a internet e ver receitas.",
+				"Athlon",
+				"8GB",
+				"500W"
+		));
+		
+		clientes.add(new Cliente(
+				"Editor de Vídeo",
+				"Preciso editar e renderizar vídeos.",
+				"Ryzen 3",
+				"32GB",
+				"650W"
+		));
+		
+		clientes.add(new Cliente(
+				"Estudante",
+				"Preciso estudar e fazer trabalhos.",
+				"Intel i3",
+				"16GB",
+				"500W"
+		));
+		
+		// sorteio do cliente
+		Random random = new Random();
 		Scanner sc = new Scanner(System.in);
-		System.out.println("BuildBOOM iniciado!");
 		
-		for(int i = 0; i < 3; i++) {
-			System.out.printf("Rodada %d\n", i + 1);
+		for(int rodada = 1; rodada <= 4; rodada++) {
+			int indice = random.nextInt(clientes.size());
 			
-			for(int j = 0; j < 3; j++) {
-				System.out.printf("%d - %s\n", j + 1, opcoes[i][j]);
+			Cliente clienteAtual = clientes.get(indice);
+			
+			System.out.println("\n======================");
+			System.out.printf("\nRODADA: %d\n", rodada);
+			System.out.println("======================");
+			
+			System.out.println("Cliente chegou!");
+			System.out.printf("\nTipo: %s", clienteAtual.getNome());
+			System.out.printf("\nPedido: %s", clienteAtual.getPedido());
+			
+			clientes.remove(indice);
+			
+			// criando alguns tipos de componentes para teste
+			String[] componentes = {
+					"Processador",
+					"Memória RAM",
+					"Fonte"
+			};
+			
+			String[][] opcoes = { 
+					// opções quaisquer para teste
+					{
+						"Ryzen 3",	
+						"Intel i3",
+						"Athlon"
+					},
+					{
+						"8GB", 
+						"16GB",
+						"32GB"
+					},
+					{
+						"500W",
+						"650W",
+						"750W"
+					}
+			};
+			
+			String[] escolhas = new String[3];
+			System.out.println("BuildBOOM iniciado!");
+			
+			for(int i = 0; i < 3; i++) {
+				System.out.printf("Rodada %d\n", i + 1);
+				
+				for(int j = 0; j < 3; j++) {
+					System.out.printf("%d - %s\n", j + 1, opcoes[i][j]);
+				}
+				System.out.printf("\nDigite sua escolha da rodada %d: ", i + 1);
+				int escolha = sc.nextInt();
+				
+				while(escolha < 1 || escolha > 3) {
+					System.out.printf("\nDigite sua escolha novamente da rodada %d: ", i + 1);
+					escolha = sc.nextInt();
+				}
+				
+				escolhas[i] = opcoes[i][escolha - 1];
 			}
-			System.out.printf("\nDigite sua escolha da rodada %d: ", i + 1);
-			int escolha = sc.nextInt();
 			
-			while(escolha < 1 || escolha > 3) {
-				System.out.printf("\nDigite sua escolha novamente da rodada %d: ", i + 1);
-				escolha = sc.nextInt();
+			System.out.println("\nEscolhas do jogador");
+			
+			for(int i = 0; i < 3; i++) {
+				System.out.printf("Rodada %d: opcao %s\n", i + 1, escolhas[i]);
 			}
 			
-			escolhas[i] = opcoes[i][escolha - 1];
+			System.out.println("Fim de jogo!");
 		}
-		
-		System.out.println("\nEscolhas do jogador");
-		
-		for(int i = 0; i < 3; i++) {
-			System.out.printf("Rodada %d: opcao %s\n", i + 1, escolhas[i]);
-		}
-		
-		System.out.println("Fim de jogo!");
 		sc.close();
 	}
-
-
 	@Override
 	public void run() {
 		double IntervaloDeDesenho=1000000000/FPS;
