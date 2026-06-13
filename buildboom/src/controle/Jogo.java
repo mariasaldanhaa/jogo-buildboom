@@ -1,4 +1,5 @@
 package controle;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -13,13 +14,14 @@ import javax.swing.JPanel;
 import telas.TelaFase;
 import telas.TelaFinal;
 import telas.TelaInicial;
+import entidades.*;
 
-//A classe jogo é filha da classe JPanel, ou seja, herda os seus métodos e atributos.
+// A classe jogo é filha da classe JPanel, ou seja, herda os seus métodos e atributos.
 public class Jogo extends JPanel implements Runnable {
-	//Dimensões
-	private int larguraTela=1000;
-	private int alturaTela=600;
-	private int FPS=45;
+	// Dimensões
+	private int larguraTela = 1000;
+	private int alturaTela = 600;
+	private int FPS = 45;
 
 /*A classe Thread é nativa do Java, servindo para executar ações em paralelo,
 como por exemplo renderizar os objetos.*/
@@ -34,7 +36,7 @@ como por exemplo renderizar os objetos.*/
 	private int faseAtual=1;
 	
 	public Jogo() {
-		this.setPreferredSize(new Dimension(larguraTela,alturaTela));
+		this.setPreferredSize(new Dimension(larguraTela, alturaTela));
 		this.setBackground(Color.gray);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
@@ -45,9 +47,11 @@ como por exemplo renderizar os objetos.*/
 		this.addMouseListener(this.tInicial);
 	    this.addMouseMotionListener(this.tInicial);
 	}
+	
 	public int getLarguraTela() {
 		return larguraTela;
 	}
+	
 	public int getAlturaTela() {
 		return alturaTela;
 	}
@@ -58,43 +62,46 @@ como por exemplo renderizar os objetos.*/
 		this.faseAtual=faseAtual;
 	}
 	public void startGameThread() {
-		gameThread=new Thread(this);
+		gameThread = new Thread(this);
 		gameThread.start();
 	}
 	
 	@Override
 	public void run() {
-		double IntervaloDeDesenho=1000000000/FPS;
-		double quandoDesenharOProximoobjeto=System.nanoTime()+IntervaloDeDesenho;
-		while(gameThread!=null) {
+		double IntervaloDeDesenho = 1000000000 / FPS;
+		double quandoDesenharOProximoobjeto = System.nanoTime() + IntervaloDeDesenho;
+		while(gameThread != null) {
 			atualizar();
 			repaint();
 			try {
-				double tempoRestante=quandoDesenharOProximoobjeto-System.nanoTime();
-				tempoRestante=tempoRestante/1000000;
-				if(tempoRestante<0) {
-					tempoRestante=0;
+				double tempoRestante = quandoDesenharOProximoobjeto - System.nanoTime();
+				tempoRestante = tempoRestante / 1000000;
+				if(tempoRestante < 0) {
+					tempoRestante = 0;
 				}
 				Thread.sleep((long)tempoRestante);
-				quandoDesenharOProximoobjeto+=IntervaloDeDesenho;
+				quandoDesenharOProximoobjeto += IntervaloDeDesenho;
 				
-			}catch(InterruptedException e) {
+			} catch(InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
 	public void atualizar() {
 		
 	}
-	//O método paintComponent é do proprio java Swing.
+	
+	// O método paintComponent é do próprio java Swing.
 	@Override
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2=(Graphics2D)g;
 		//Parte do codigo que muda a tela de acordo com a opção
 		
+		// Parte do código que muda a tela de acordo com a opção
 		if (EstadoAtual == 0 ) {
-			//Menu inicial
+			// Menu inicial
 			tInicial.desenhar(g2);
 		}
 		if (EstadoAtual == 1 ) {
@@ -105,8 +112,7 @@ como por exemplo renderizar os objetos.*/
 				tFinal.desenhar(g2);
 		}
 		if (EstadoAtual == 2 ) {
-			//Sair
-			
+			// Sair
 		}
 	}
 	public void mudarParaFase() {
