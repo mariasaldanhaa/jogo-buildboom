@@ -2,7 +2,6 @@ package controle;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.*;
@@ -16,36 +15,73 @@ import telas.TelaFinal;
 import telas.TelaInicial;
 import entidades.*;
 
-// A classe jogo é filha da classe JPanel, ou seja, herda os seus métodos e atributos.
 public class Jogo extends JPanel implements Runnable {
-	// Dimensões
 	private int larguraTela = 1000;
 	private int alturaTela = 600;
 	private int FPS = 45;
 
-/*A classe Thread é nativa do Java, servindo para executar ações em paralelo,
-como por exemplo renderizar os objetos.*/
 	Thread gameThread;
 	
 	TelaInicial tInicial;
 	TelaFase tFase;
-	TelaFinal tFinal;
-// Variaveis do controle da Tela
-	public int EstadoAtual = 0; // 0 = Menu, 1 = Jogando, 2 = Opções
-	public int opçãoSelecionada = -1; // 0 = Jogar, 1 = Opções, 2 = Sair
-	private int faseAtual=1;
+	
+	public int EstadoAtual = 0; 
+	public int opçãoSelecionada = -1; 
+	public int faseAtual = 1;
+	
+	// CHAVE: Variáveis de controle para armazenar o resultado da montagem gráfica
+	public int resultadoMontagemAtual = 0; // 0 = Não testado, 1 = Sucesso, 2 = Incompatível, 3 = Explodiu
 	
 	public Jogo() {
 		this.setPreferredSize(new Dimension(larguraTela, alturaTela));
 		this.setBackground(Color.gray);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
-		this.tInicial= new TelaInicial(this);
-		this.tFase= new TelaFase(this);
-		this.tFinal=new TelaFinal(this);
+		this.tInicial = new TelaInicial(this);
+		this.tFase = new TelaFase(this);
 		
-		this.addMouseListener(this.tInicial);
-	    this.addMouseMotionListener(this.tInicial);
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int mx = e.getX();
+				int my = e.getY();
+				
+				if (EstadoAtual == 0) {
+					if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+						EstadoAtual = 1; 
+					}
+					else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
+						EstadoAtual = 2; 
+					}
+					else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
+						System.exit(0); 
+					}
+				}	
+			}
+		});
+		
+		this.addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				int mx = e.getX();
+				int my = e.getY();
+				
+				if (EstadoAtual == 0) {
+					if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+						opçãoSelecionada = 0;
+					}
+					else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
+						opçãoSelecionada = 1; 
+					}
+					else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
+						opçãoSelecionada = 2; 
+					} 
+					else {
+						opçãoSelecionada = -1; 
+					}
+				}
+			}
+		});
 	}
 	
 	public int getLarguraTela() {
@@ -89,19 +125,16 @@ como por exemplo renderizar os objetos.*/
 	}
 	
 	public void atualizar() {
-		
+		// O loop roda em tempo real atualizando as mecânicas visuais aqui
 	}
 	
-	// O método paintComponent é do próprio java Swing.
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2=(Graphics2D)g;
 		//Parte do codigo que muda a tela de acordo com a opção
 		
-		// Parte do código que muda a tela de acordo com a opção
 		if (EstadoAtual == 0 ) {
-			// Menu inicial
 			tInicial.desenhar(g2);
 		}
 		if (EstadoAtual == 1 ) {
@@ -110,9 +143,6 @@ como por exemplo renderizar os objetos.*/
 				tFase.desenhar(g2);
 			else
 				tFinal.desenhar(g2);
-		}
-		if (EstadoAtual == 2 ) {
-			// Sair
 		}
 	}
 	public void mudarParaFase() {
