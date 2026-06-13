@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 import telas.TelaFase;
+import telas.TelaFinal;
 import telas.TelaInicial;
 import entidades.*;
 
@@ -90,7 +91,12 @@ public class Jogo extends JPanel implements Runnable {
 	public int getAlturaTela() {
 		return alturaTela;
 	}
-	
+	public int getFaseAtual() {
+		return faseAtual;
+	}
+	public void setFaseAtual(int faseAtual) {
+		this.faseAtual=faseAtual;
+	}
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
@@ -125,13 +131,31 @@ public class Jogo extends JPanel implements Runnable {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D)g;
+		Graphics2D g2=(Graphics2D)g;
+		//Parte do codigo que muda a tela de acordo com a opção
 		
 		if (EstadoAtual == 0 ) {
 			tInicial.desenhar(g2);
 		}
 		if (EstadoAtual == 1 ) {
-			tFase.desenhar(g2);
+			mudarParaFase();
+			if(faseAtual<=5)
+				tFase.desenhar(g2);
+			else
+				tFinal.desenhar(g2);
 		}
 	}
+	public void mudarParaFase() {
+	    // Remove os controles da tela inicial
+	    this.removeMouseListener(tInicial);
+	    this.removeMouseMotionListener(tInicial);
+	    
+	    // Altera o estado
+	    this.EstadoAtual = 1;
+	    
+	    // Adiciona os controles da fase
+	    this.addMouseListener(tFase);
+	    this.addMouseMotionListener(tFase);
+	}
+
 }
