@@ -24,6 +24,7 @@ public class Jogo extends JPanel implements Runnable {
 	
 	TelaInicial tInicial;
 	TelaFase tFase;
+    TelaFinal tFinal;
 	
 	public int EstadoAtual = 0; 
 	public int opçãoSelecionada = -1; 
@@ -33,14 +34,20 @@ public class Jogo extends JPanel implements Runnable {
 	public int resultadoMontagemAtual = 0; // 0 = Não testado, 1 = Sucesso, 2 = Incompatível, 3 = Explodiu
 	
 	public Jogo() {
-		this.setPreferredSize(new Dimension(larguraTela, alturaTela));
-		this.setBackground(Color.gray);
-		this.setDoubleBuffered(true);
-		this.setFocusable(true);
-		this.tInicial = new TelaInicial(this);
-		this.tFase = new TelaFase(this);
-		
+	        this.setPreferredSize(new Dimension(larguraTela, alturaTela));
+	        this.setBackground(Color.gray);
+	        this.setDoubleBuffered(true);
+	        this.setFocusable(true);
+	        
+	        this.tInicial = new TelaInicial(this);
+	        this.tFase = new TelaFase(this);
+	        this.tFinal = new TelaFinal(this);
+	        
+	        this.addMouseListener(tInicial);
+	        this.addMouseMotionListener(tInicial);
+	        
 		this.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				int mx = e.getX();
@@ -129,33 +136,29 @@ public class Jogo extends JPanel implements Runnable {
 	}
 	
 	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2=(Graphics2D)g;
-		//Parte do codigo que muda a tela de acordo com a opção
-		
-		if (EstadoAtual == 0 ) {
-			tInicial.desenhar(g2);
-		}
-		if (EstadoAtual == 1 ) {
-			mudarParaFase();
-			if(faseAtual<=5)
-				tFase.desenhar(g2);
-			else
-				tFinal.desenhar(g2);
-		}
-	}
-	public void mudarParaFase() {
-	    // Remove os controles da tela inicial
-	    this.removeMouseListener(tInicial);
-	    this.removeMouseMotionListener(tInicial);
-	    
-	    // Altera o estado
-	    this.EstadoAtual = 1;
-	    
-	    // Adiciona os controles da fase
-	    this.addMouseListener(tFase);
-	    this.addMouseMotionListener(tFase);
-	}
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2=(Graphics2D)g;
+        
+        // Desenhando a tela de acordo com o estado
+        if (EstadoAtual == 0 ) {
+            tInicial.desenhar(g2);
+        } 
+        else if (EstadoAtual == 1 ) {
+            // ATENÇÃO: O mudarParaFase() foi removido daqui para não travar o PC!
+            tFase.desenhar(g2);
+        }
+        else if (EstadoAtual == 3 ) {
+            tFinal.desenhar(g2); // Desenha a tela final ao passar da fase 5
+        }
+    }
 
+    // O método mudarParaFase() continua existindo igualzinho você fez
+    public void mudarParaFase() {
+        this.removeMouseListener(tInicial);
+        this.removeMouseMotionListener(tInicial);
+        this.EstadoAtual = 1;
+        this.addMouseListener(tFase);
+        this.addMouseMotionListener(tFase);
+    }
 }

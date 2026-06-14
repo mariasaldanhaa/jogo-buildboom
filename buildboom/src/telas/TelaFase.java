@@ -21,26 +21,32 @@ public class TelaFase extends MouseAdapter{
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        int cont=1;
         
         // Verifica se o jogo está na tela da Fase
         if (jg.EstadoAtual == 1) {
-            // Clique no componente 1
+            boolean escolheuComponente = false;
+            
+            // Verifica se clicou em alguma das 3 caixas
             if (mx >= 20 && mx <= 220 && my >= 200 && my <= 400) {
-            	cont++;
-            	jg.setFaseAtual(cont);
+                escolheuComponente = true;
+            } else if (mx >= 250 && mx <= 450 && my >= 200 && my <= 400) {
+                escolheuComponente = true;
+            } else if (mx >= 480 && mx <= 680 && my >= 200 && my <= 400) {
+                escolheuComponente = true;
             }
-            // Clique no componente 2
-            else if (mx >= 250 && mx <= 450 && my >= 200 && my <= 400) {
-            	cont+=1;
-            	jg.setFaseAtual(cont); 
+
+            // Se o jogador clicou em um componente válido, avança a fase
+            if (escolheuComponente) {
+                int proximaFase = jg.getFaseAtual() + 1;
+                
+                if (proximaFase > 5) {
+                    jg.EstadoAtual = 3; // 3 será o estado da nossa TelaFinal
+                } else {
+                    jg.setFaseAtual(proximaFase);
+                    componenteEscolhido = -1; // Reseta a seleção visual ("V") para a próxima fase
+                }
             }
-            // Clique no componente 3
-            else if (mx >= 480 && mx <= 680 && my >= 200 && my <= 400) {
-            	cont+=1;
-            	jg.setFaseAtual(cont);
-            }
-        }	
+        }    
     }
 
     // Lógica de passar o mouse por cima
