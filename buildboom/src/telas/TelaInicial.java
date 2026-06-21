@@ -21,6 +21,9 @@ public class TelaInicial extends MouseAdapter {
         if (jg.EstadoAtual == 0) {
             // Clique no botão 1 (Começar)
             if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+            	// Sorteia o cliente da rodada
+            	jg.sortearCliente();
+            	
                 jg.mudarParaFase(); // Chama a transição de forma segura aqui!
             }         if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
                 jg.EstadoAtual = 1; 

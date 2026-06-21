@@ -25,13 +25,24 @@ public class Jogo extends JPanel implements Runnable {
 	TelaInicial tInicial;
 	TelaFase tFase;
     TelaFinal tFinal;
+    
+    public GerenciadorComponentes gerenciador;
 	
 	public int EstadoAtual = 0; 
 	public int opçãoSelecionada = -1; 
 	public int faseAtual = 1;
 	
-	// CHAVE: Variáveis de controle para armazenar o resultado da montagem gráfica
+	// Cliente que está sendo atendido atualmente
+	public Cliente clienteAtual;
+	
+	// Lista de todos os clientes do jogo
+	public ArrayList<Cliente> clientes = new ArrayList<>();
+
 	public int resultadoMontagemAtual = 0; // 0 = Não testado, 1 = Sucesso, 2 = Incompatível, 3 = Explodiu
+
+	public Componente componenteEscolhidoCPU = null;
+	public Componente componenteEscolhidoRAM = null;
+	public Componente componenteEscolhidoFonte = null;
 	
 	public Jogo() {
 	        this.setPreferredSize(new Dimension(larguraTela, alturaTela));
@@ -42,6 +53,9 @@ public class Jogo extends JPanel implements Runnable {
 	        this.tInicial = new TelaInicial(this);
 	        this.tFase = new TelaFase(this);
 	        this.tFinal = new TelaFinal(this);
+	        
+	        // armazena todos os componentes do jogo e fornece as opções para cada fase
+	        gerenciador = new GerenciadorComponentes();
 	        
 	        this.addMouseListener(tInicial);
 	        this.addMouseMotionListener(tInicial);
@@ -89,6 +103,73 @@ public class Jogo extends JPanel implements Runnable {
 				}
 			}
 		});
+		
+		// Cadastro dos clientes do jogo
+		clientes.add(new Cliente(
+		    "Matheus",
+		    "Streamer Gamer",
+		    "ㅤJogos\r\n"
+		    + "ㅤStreaming\r\n"
+		    + "ㅤAlto desempenho",
+		    "Ryzen 7",
+		    "32GB",
+		    "750W"
+		));
+
+		clientes.add(new Cliente(
+		    "Dona Maria",
+		    "Aposentada",
+		    "ㅤInternet\r\n"
+		    + "ㅤReceitas\r\n"
+		    + "ㅤVídeos",
+		    "Athlon",
+		    "8GB",
+		    "500W"
+		));
+
+		clientes.add(new Cliente(
+		    "Carlos",
+		    "Dono de Mercado",
+		    "ㅤEstoque\r\n"
+		    + "ㅤVendas\r\n"
+		    + "ㅤSistema da loja",
+		    "Intel i3",
+		    "16GB",
+		    "650W"
+		));
+
+		clientes.add(new Cliente(
+		    "Gabriel",
+		    "Estudante Universitário",
+		    "ㅤEstudos\r\n"
+		    + "ㅤProgramação\r\n"
+		    + "ㅤTrabalhos",
+		    "Ryzen 3",
+		    "16GB",
+		    "500W"
+		));
+		
+		// sorteia um cliente ao iniciar
+		sortearCliente();
+	}
+	
+	// Sorteia um cliente aleatório
+	public void sortearCliente() {
+	    Random random = new Random();
+
+	    int indice = random.nextInt(clientes.size());
+
+	    clienteAtual = clientes.get(indice);
+
+	    System.out.println("====================");
+	    System.out.println("NOVO CLIENTE");
+	    System.out.println("====================");
+
+	    System.out.println("Nome: " + clienteAtual.getNome());
+	    System.out.println("Profissão: " + clienteAtual.getProfissao());
+	    System.out.println("Objetivo: " + clienteAtual.getObjetivo());
+
+	    System.out.println("====================\n");
 	}
 	
 	public int getLarguraTela() {
@@ -145,20 +226,19 @@ public class Jogo extends JPanel implements Runnable {
             tInicial.desenhar(g2);
         } 
         else if (EstadoAtual == 1 ) {
-            // ATENÇÃO: O mudarParaFase() foi removido daqui para não travar o PC!
             tFase.desenhar(g2);
         }
         else if (EstadoAtual == 3 ) {
-            tFinal.desenhar(g2); // Desenha a tela final ao passar da fase 5
+            tFinal.desenhar(g2);
         }
     }
 
-    // O método mudarParaFase() continua existindo igualzinho você fez
     public void mudarParaFase() {
         this.removeMouseListener(tInicial);
         this.removeMouseMotionListener(tInicial);
         this.EstadoAtual = 1;
         this.addMouseListener(tFase);
         this.addMouseMotionListener(tFase);
+        sortearCliente();
     }
 }
