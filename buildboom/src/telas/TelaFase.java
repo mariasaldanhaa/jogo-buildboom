@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import controle.GerenciadorComponentes;
 import controle.Jogo;
 import entidades.Componente;
 import entidades.TipoComponente;
@@ -19,6 +20,7 @@ import java.util.List;
 public class TelaFase extends MouseAdapter {
 
     Jogo jg;
+    TelaFinal telaFinal;
     int meio;
     int larguraTela;
     int alturaTela;
@@ -144,22 +146,39 @@ public class TelaFase extends MouseAdapter {
     }
     
     private void verificarMontagemFinal() {
-        // Valida a compatibilidade dos 3 componentes
+
         int resultado = jg.gerenciador.validarCompatibilidade(
-            componenteCPU,
-            componenteRAM,
-            componenteFonte
+                componenteCPU,
+                componenteRAM,
+                componenteFonte
         );
-        
-        // Armazena o resultado no Jogo
+
         jg.resultadoMontagemAtual = resultado;
-        
-        // Armazena os componentes escolhidos no Jogo
+
         jg.componenteEscolhidoCPU = componenteCPU;
         jg.componenteEscolhidoRAM = componenteRAM;
         jg.componenteEscolhidoFonte = componenteFonte;
-        
-        // Vai para a tela de resultado
+
+
+        if(resultado == GerenciadorComponentes.SUCESSO){
+        		boolean pedidoAtendido =jg.gerenciador.atendePedido(componenteCPU,componenteRAM,componenteFonte);
+
+            if(pedidoAtendido){
+                System.out.println("Cliente satisfeito");
+                telaFinal.setResultado(0);
+            }
+            else{
+                System.out.println("PC funciona, mas não atende ao pedido");
+                telaFinal.setResultado(1);
+            }
+        }
+        else if(resultado == GerenciadorComponentes.INCOMPATIVEL){
+            System.out.println("Componentes incompatíveis");
+            telaFinal.setResultado(0);
+        }
+        else{
+            System.out.println("A bancada explodiu");
+        }
         jg.EstadoAtual = 3;
     }
     

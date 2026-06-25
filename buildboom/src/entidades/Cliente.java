@@ -14,6 +14,7 @@ public class Cliente {
 				   String processadorIdeal,
 				   String ramIdeal,
 				   String fonteIdeal) {
+		
 		this.nome = nome;
 		this.profissao = profissao;
 		this.objetivo = objetivo;
