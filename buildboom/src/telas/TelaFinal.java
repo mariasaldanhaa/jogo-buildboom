@@ -25,23 +25,23 @@ public class TelaFinal {
 		g2.setFont(new Font("Arial", Font.BOLD, 75));
 		g2.setColor(Color.YELLOW);
 		g2.drawString("Fim", 550, 100);
+		informarCompatibilidade(g2);
 	}
 	public void informarCompatibilidade(Graphics g2) {
-		g2.setFont(new Font("Arial", Font.BOLD, 75));
-		g2.setColor(Color.YELLOW);
-		
+	    g2.setFont(new Font("Arial", Font.BOLD, 30));
+	    g2.setColor(Color.YELLOW);
 
-        if(resultado==0){
-        	g2.drawString("Cliente satisfeito", 550, 100);
-        }
-        else if(resultado==1){
-        	g2.drawString("PC funciona, mas não atende ao pedido", 550, 100);    
-        }
-        else if(resultado==2){
-        	g2.drawString("Componentes incompatíveis", 550, 100);        	
-        }
-        else{
-        	g2.drawString("A bancada explodiu", 550, 100);         		
+	    if(resultado == 0){
+	        g2.drawString("Cliente satisfeito", 200, 300);
+	    }
+	    else if(resultado == 1){
+	        g2.drawString("PC funciona, mas não atende ao pedido", 200, 300);
+	    }
+	    else if(resultado == 2){
+	        g2.drawString("Componentes incompatíveis", 200, 300);
+	    }
+	    else if(resultado == 3){
+	        g2.drawString("A bancada explodiu", 200, 300);
+	    }
 	}
-}
 }
