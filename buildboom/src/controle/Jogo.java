@@ -24,7 +24,7 @@ public class Jogo extends JPanel implements Runnable {
 	
 	TelaInicial tInicial;
 	TelaFase tFase;
-    TelaFinal tFinal;
+    public TelaFinal tFinal;
     
     public GerenciadorComponentes gerenciador;
 	

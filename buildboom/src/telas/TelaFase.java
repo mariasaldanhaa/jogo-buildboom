@@ -20,7 +20,6 @@ import java.util.List;
 public class TelaFase extends MouseAdapter {
 
     Jogo jg;
-    TelaFinal telaFinal;
     int meio;
     int larguraTela;
     int alturaTela;
@@ -48,7 +47,6 @@ public class TelaFase extends MouseAdapter {
         this.larguraTela = jg.getLarguraTela();
         this.alturaTela = jg.getAlturaTela();
         this.meio = larguraTela / 2;
-        
         try {
             imagemComanda = new ImageIcon(
                 getClass().getResource("/assets/comanda.png")
@@ -165,19 +163,20 @@ public class TelaFase extends MouseAdapter {
 
             if(pedidoAtendido){
                 System.out.println("Cliente satisfeito");
-                telaFinal.setResultado(0);
+                jg.tFinal.setResultado(0);
             }
             else{
                 System.out.println("PC funciona, mas não atende ao pedido");
-                telaFinal.setResultado(1);
+                jg.tFinal.setResultado(1);
             }
         }
         else if(resultado == GerenciadorComponentes.INCOMPATIVEL){
             System.out.println("Componentes incompatíveis");
-            telaFinal.setResultado(0);
+            jg.tFinal.setResultado(2);
         }
         else{
             System.out.println("A bancada explodiu");
+            jg.tFinal.setResultado(3);
         }
         jg.EstadoAtual = 3;
     }
