@@ -23,7 +23,6 @@ public class TelaFase extends MouseAdapter {
     int meio;
     int larguraTela;
     int alturaTela;
-    
     int larguraComponente = 160;
     int alturaComponente = 180;
     int componenteEscolhido = -1;

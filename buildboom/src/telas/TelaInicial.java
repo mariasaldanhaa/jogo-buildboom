@@ -3,15 +3,33 @@ package telas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.ImageIcon;
 
 import controle.Jogo;
 
 public class TelaInicial extends MouseAdapter {
 	Jogo jg;
+	int meio;
+	int larguraTela;
+    int alturaTela;
+    private Image imagemElipse;
 	public TelaInicial(Jogo jg) {
 		this.jg=jg;
+		this.meio = larguraTela / 2;
+		this.larguraTela = jg.getLarguraTela();
+	    this.alturaTela = jg.getAlturaTela();
+	    try {
+            imagemElipse = new ImageIcon(
+                getClass().getResource("/assets/elipse.png")
+            ).getImage();
+        } catch (Exception e) {
+            imagemElipse = null;
+            System.out.println("Imagem da elipse não encontrada! Usando texto.");
+        }
 	}
 	@Override
     public void mousePressed(MouseEvent e) {
@@ -62,26 +80,28 @@ public class TelaInicial extends MouseAdapter {
         }
     }
 	public void desenhar(Graphics g2) {
-		//Caixa Azul no BuilBOOM
-		g2.setColor(Color.BLUE);
-		g2.fillRoundRect(530, 20, 460, 200, 100, 100);
-				
-				//Build BOOM do menu
-		g2.setFont(new Font("Arial", Font.BOLD, 75));
-		g2.setColor(Color.YELLOW);
-		g2.drawString("BuildBOOM", 550, 100);
-				
+		// fundo
+        g2.setColor(new Color(245, 240, 230));
+        //elipses do titulo e opçoes
+        g2.fillRect(0, 0, larguraTela, alturaTela);
+        if (imagemElipse != null) {
+            int elipseX = 400;
+            int elipseY = -150;
+            //titulo
+            g2.drawImage(imagemElipse, elipseX, elipseY, 720, 500, null);
+            //opcoes
+            g2.drawImage(imagemElipse, -30, -70, 450, 850, null);
+        }
+      
+		//Build BOOM do menu
+		 g2.setFont(new Font("Arial", Font.BOLD, 75));
+		 g2.setColor(Color.white);
+		 g2.drawString("BuildBOOM", 550, 150);		
 		 g2.setFont(new Font("Arial", Font.BOLD, 40));
-
-		//Caixa Azul das opções iniciais
-		g2.setColor(Color.BLUE);
-		g2.fillRoundRect(20, 200, 400, 350, 100, 100);
-
-
 
 		 // Opções do inicio do jogo
 		 int xTexto = 100;
-		 g2.setColor(Color.YELLOW);
+		 g2.setColor(Color.white);
 		        
 		 g2.drawString("Começar", xTexto, 300);
 		 if (jg.opçãoSelecionada == 0) {

@@ -25,7 +25,6 @@ public class Jogo extends JPanel implements Runnable {
 	TelaInicial tInicial;
 	TelaFase tFase;
     public TelaFinal tFinal;
-    
     public GerenciadorComponentes gerenciador;
 	
 	public int EstadoAtual = 0; 
@@ -111,7 +110,7 @@ public class Jogo extends JPanel implements Runnable {
 		    "ㅤJogos\r\n"
 		    + "ㅤStreaming\r\n"
 		    + "ㅤAlto desempenho",
-		    "Ryzen 7",
+		    "Ryzen 3",
 		    "32GB",
 		    "750W"
 		));
