@@ -160,6 +160,7 @@ public class Jogo extends JPanel implements Runnable {
 	    int indice = random.nextInt(clientes.size());
 
 	    clienteAtual = clientes.get(indice);
+	    gerenciador.setClienteAtual(clienteAtual);
 
 	    System.out.println("====================");
 	    System.out.println("NOVO CLIENTE");

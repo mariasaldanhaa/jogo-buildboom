@@ -1,6 +1,6 @@
 package controle;
 
-public enum ResultadoCompatibilidadde {
+public enum ResultadoCompatibilidade {
 	    
 		SUCESSO,
 	    INCOMPATIVEL,
