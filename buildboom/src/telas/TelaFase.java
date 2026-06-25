@@ -227,12 +227,23 @@ public class TelaFase extends MouseAdapter {
             int ty = comandaY + 80;
             
             // Nome
+            g2.setColor(Color.pink);
+            g2.setFont(new Font("Arial", Font.BOLD, 20));
+            g2.drawString("Nome:", tx - 5, ty + 45);
+            
+            // Informação do Nome
             g2.setColor(Color.white);
             g2.setFont(new Font("Monospaced", Font.BOLD, 25));
             g2.drawString(jg.clienteAtual.getNome(), tx - 3, ty + 80);
             ty += 28;
             
             // Profissão
+            g2.setColor(Color.pink);
+            g2.setFont(new Font("Arial", Font.BOLD, 20));
+            g2.drawString("Profissão:", tx - 5, ty + 90);
+            
+            // Informação da Profissão
+            g2.setColor(Color.white);
             g2.setFont(new Font("Monospaced", Font.BOLD, 20));
             g2.drawString(jg.clienteAtual.getProfissao(), tx - 3, ty + 128);
             ty += 30;
@@ -240,7 +251,7 @@ public class TelaFase extends MouseAdapter {
             // Objetivo
             g2.setColor(Color.pink);
             g2.setFont(new Font("Arial", Font.BOLD, 20));
-            g2.drawString("Objetivo:", tx - 10, ty + 140);
+            g2.drawString("Objetivo:", tx - 5, ty + 140);
             ty += 22;
             
             g2.setColor(Color.white);
