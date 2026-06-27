@@ -60,30 +60,41 @@ public class TelaInicial extends MouseAdapter {
 	    }
 	}
 	@Override
-    public void mousePressed(MouseEvent e) {
-        int mx = e.getX();
-        int my = e.getY();
-        int larguraBotao = 250;
-        int xBotao = (larguraTela - larguraBotao) / 2;
-        
-        if (jg.EstadoAtual == 0) {
-            // Clique no botão 1 (Começar)
-            if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 260 && my <= 310) {
-            	// Sorteia o cliente da rodada
-            	jg.sortearCliente();
-            	
-                jg.mudarParaFase(); // Chama a transição de forma segura aqui!
-            }
-            // Clique no botão 2
-            else if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 360 && my <= 410) {
-                jg.EstadoAtual = 2; 
-            }
-            // Clique no botão Sair
-            else if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 460 && my <= 510) {
-                System.exit(0); 
-            }
-        }	
-    }
+	public void mousePressed(MouseEvent e) {
+
+	    int mx = e.getX();
+	    int my = e.getY();
+
+	    int painelX = 170;
+	    int painelLargura = 630;
+
+	    int larguraBotao = 250;
+	    int xBotao = painelX + (painelLargura - larguraBotao) / 2;
+
+	    if (jg.EstadoAtual == 0) {
+	        // Começar
+	    	if (mx >= xBotao && mx <= xBotao + larguraBotao &&
+	            my >= 335 && my <= 375) {
+
+	            jg.sortearCliente();
+	            jg.mudarParaFase();
+	        }
+
+	        // Opções
+	        else if (mx >= xBotao && mx <= xBotao + larguraBotao &&
+	                 my >= 392 && my <= 432) {
+
+	            jg.EstadoAtual = 2;
+	        }
+
+	        // Sair
+	        else if (mx >= xBotao && mx <= xBotao + larguraBotao &&
+	                 my >= 450 && my <= 490) {
+
+	            System.exit(0);
+	        }
+	    }
+	}
 
     // Lógica de passar o mouse por cima (hover) movida para cá
 	@Override
