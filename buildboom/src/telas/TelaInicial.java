@@ -16,106 +16,179 @@ public class TelaInicial extends MouseAdapter {
 	int meio;
 	int larguraTela;
     int alturaTela;
-    private Image imagemElipse;
+    private Image imagemLogo;
+    private Image imagemSeta;
+    private Image imagemFundo;
+    private Image imagemFundoInicial;
+    
 	public TelaInicial(Jogo jg) {
 		this.jg=jg;
 		this.meio = larguraTela / 2;
 		this.larguraTela = jg.getLarguraTela();
 	    this.alturaTela = jg.getAlturaTela();
+	    
 	    try {
-            imagemElipse = new ImageIcon(
-                getClass().getResource("/assets/elipse.png")
-            ).getImage();
-        } catch (Exception e) {
-            imagemElipse = null;
-            System.out.println("Imagem da elipse não encontrada! Usando texto.");
-        }
+	        imagemFundo = new ImageIcon(
+	            getClass().getResource("/assets/fundoInicial.png")
+	        ).getImage();
+	    } catch (Exception e) {
+	        imagemFundo = null;
+	    }
+	    
+	    try {
+	    	imagemFundoInicial = new ImageIcon(
+	    			getClass().getResource("/assets/comanda_inicial.png")).getImage();
+	    } catch (Exception e) {
+	    	imagemFundoInicial = null;
+	    }
+	    
+	    try {
+	        imagemSeta = new ImageIcon(
+	            getClass().getResource("/assets/seta_opcoes.png")
+	        ).getImage();
+	    } catch (Exception e) {
+	        imagemSeta = null;
+	    }
+	    
+	    try {
+	        imagemLogo = new ImageIcon(
+	            getClass().getResource("/assets/logo_buildboom.png")
+	        ).getImage();
+	    } catch (Exception e) {
+	        imagemLogo = null;
+	        System.out.println("Imagem da logo não encontrada!");
+	    }
 	}
 	@Override
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
+        int larguraBotao = 250;
+        int xBotao = (larguraTela - larguraBotao) / 2;
         
         if (jg.EstadoAtual == 0) {
             // Clique no botão 1 (Começar)
-            if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
+            if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 260 && my <= 310) {
             	// Sorteia o cliente da rodada
             	jg.sortearCliente();
             	
                 jg.mudarParaFase(); // Chama a transição de forma segura aqui!
-            }         if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
-                jg.EstadoAtual = 1; 
-                
             }
             // Clique no botão 2
-            else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
+            else if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 360 && my <= 410) {
                 jg.EstadoAtual = 2; 
             }
             // Clique no botão Sair
-            else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
+            else if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 460 && my <= 510) {
                 System.exit(0); 
             }
         }	
     }
 
     // Lógica de passar o mouse por cima (hover) movida para cá
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        int mx = e.getX();
-        int my = e.getY();
-        
-        if (jg.EstadoAtual == 0) {
-            if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
-                jg.opçãoSelecionada = 0;
-            }
-            else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
-                jg.opçãoSelecionada = 1; 
-            }
-            else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
-                jg.opçãoSelecionada = 2; 
-            } 
-            else {
-                jg.opçãoSelecionada = -1; 
-            }
-        }
-    }
+	@Override
+	public void mouseMoved(MouseEvent e) {
+
+	    int mx = e.getX();
+	    int my = e.getY();
+
+	    int painelX = 170;
+	    int painelLargura = 630;
+
+	    int larguraBotao = 250;
+	    int xBotao = painelX + (painelLargura - larguraBotao) / 2;
+	    
+	    if (jg.EstadoAtual == 0) {
+	    	if (mx >= xBotao && mx <= xBotao + larguraBotao & my >= 335 && my <= 375) {
+	    		    jg.opçãoSelecionada = 0;
+	    		}
+	    	
+	    		else if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 392 && my <= 432) {
+	    		    jg.opçãoSelecionada = 1;
+	    		}
+
+	    		else if (mx >= xBotao && mx <= xBotao + larguraBotao && my >= 450 && my <= 490) {
+	    		    jg.opçãoSelecionada = 2;
+	    		}
+
+	    		else {
+	    		    jg.opçãoSelecionada = -1;
+	    		}
+	    }
+	}
 	public void desenhar(Graphics g2) {
+		// variáveis do painel que serão usadas para a logo e para as opções
+		int painelX = 170;
+		int painelY = -20;
+		int painelLargura = 630;
+		int painelAltura = 630;
+		
 		// fundo
-        g2.setColor(new Color(245, 240, 230));
-        //elipses do titulo e opçoes
-        g2.fillRect(0, 0, larguraTela, alturaTela);
-        if (imagemElipse != null) {
-            int elipseX = 400;
-            int elipseY = -150;
-            //titulo
-            g2.drawImage(imagemElipse, elipseX, elipseY, 720, 500, null);
-            //opcoes
-            g2.drawImage(imagemElipse, -30, -70, 450, 850, null);
-        }
-      
+		if (imagemFundo != null) {
+		    g2.drawImage(imagemFundo, 0, 0, larguraTela, alturaTela, null);
+		} else {
+		    g2.setColor(new Color(245, 240, 230));
+		    g2.fillRect(0, 0, larguraTela, alturaTela);
+		}
+		
+		// retangulo branco
+		if (imagemFundoInicial != null) {
+			g2.drawImage(imagemFundoInicial, painelX - 6, painelY, painelLargura, painelAltura, null);
+		} else {
+			g2.setColor(Color.WHITE);
+			g2.fillRoundRect(250, 30, 500, 540, 20, 20);
+		}
+		
 		//Build BOOM do menu
-		 g2.setFont(new Font("Arial", Font.BOLD, 75));
-		 g2.setColor(Color.white);
-		 g2.drawString("BuildBOOM", 550, 150);		
-		 g2.setFont(new Font("Arial", Font.BOLD, 40));
+        if (imagemLogo != null) {
+            int larguraLogo = 245;
+            int alturaLogo = 245;
+
+            int xLogo = painelX + (painelLargura - larguraLogo) / 2;
+            int yLogo = 95;
+
+            g2.drawImage(imagemLogo, xLogo, yLogo, larguraLogo, alturaLogo, null);
+        }
 
 		 // Opções do inicio do jogo
-		 int xTexto = 100;
-		 g2.setColor(Color.white);
-		        
-		 g2.drawString("Começar", xTexto, 300);
-		 if (jg.opçãoSelecionada == 0) {
-			 g2.drawString(">", xTexto - 40, 300); 
-		     }
-		        
-		 g2.drawString("Opções", xTexto, 400);
-		     if (jg.opçãoSelecionada == 1) {
-		          g2.drawString(">", xTexto - 40, 400);
-		     }
-		        
-		 g2.drawString("Sair", xTexto, 500);
-		     if (jg.opçãoSelecionada == 2) {
-		          g2.drawString(">", xTexto - 40, 500);
-		      }
+        g2.setFont(new Font("Monospaced", Font.BOLD, 30));
+
+        String[] opcoes = {
+            "Começar",
+            "Opções",
+            "Sair"
+        };
+
+        int[] y = {
+        		355,
+        		412,
+        		470
+        };
+
+        for (int i = 0; i < opcoes.length; i++) {
+
+            int larguraTexto = g2.getFontMetrics().stringWidth(opcoes[i]);
+
+            int xTexto = painelX + (painelLargura - larguraTexto) / 2;
+
+            g2.setColor(Color.black);
+            g2.drawString(opcoes[i], xTexto, y[i]);
+            
+            if (jg.opçãoSelecionada == i) {
+                if (imagemSeta != null) {
+                	int larguraSeta = 40;
+                	int alturaSeta = 40;
+
+                	g2.drawImage(imagemSeta,
+                	        xTexto - larguraSeta - 15,
+                	        y[i] - 30,
+                	        larguraSeta,
+                	        alturaSeta,
+                	        null);
+                } else {
+                    g2.drawString(">", xTexto - 40, y[i]);
+                }
+            }
+        }
 	}
 }
