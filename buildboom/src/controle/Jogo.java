@@ -25,7 +25,6 @@ public class Jogo extends JPanel implements Runnable {
 	TelaInicial tInicial;
 	TelaFase tFase;
     public TelaFinal tFinal;
-    
     public GerenciadorComponentes gerenciador;
 	
 	public int EstadoAtual = 0; 
@@ -59,83 +58,39 @@ public class Jogo extends JPanel implements Runnable {
 	        
 	        this.addMouseListener(tInicial);
 	        this.addMouseMotionListener(tInicial);
-	        
-		this.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				int mx = e.getX();
-				int my = e.getY();
-				
-				if (EstadoAtual == 0) {
-					if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
-						EstadoAtual = 1; 
-					}
-					else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
-						EstadoAtual = 2; 
-					}
-					else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
-						System.exit(0); 
-					}
-				}	
-			}
-		});
-		
-		this.addMouseMotionListener(new MouseAdapter() {
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				int mx = e.getX();
-				int my = e.getY();
-				
-				if (EstadoAtual == 0) {
-					if (mx >= 60 && mx <= 300 && my >= 260 && my <= 310) {
-						opçãoSelecionada = 0;
-					}
-					else if (mx >= 60 && mx <= 300 && my >= 360 && my <= 410) {
-						opçãoSelecionada = 1; 
-					}
-					else if (mx >= 60 && mx <= 300 && my >= 460 && my <= 510) {
-						opçãoSelecionada = 2; 
-					} 
-					else {
-						opçãoSelecionada = -1; 
-					}
-				}
-			}
-		});
 		
 		// Cadastro dos clientes do jogo
-		clientes.add(new Cliente(
-		    "Matheus",
-		    "Streamer Gamer",
-		    "ㅤJogos\r\n"
-		    + "ㅤStreaming\r\n"
-		    + "ㅤAlto desempenho",
-		    "Ryzen 7",
-		    "32GB",
-		    "750W"
-		));
+	        clientes.add(new Cliente(
+	        		"Matheus",
+	        		"Streamer Gamer",
+	        		"ㅤJogos\r\n"
+	        				+ "ㅤStreaming\r\n"
+	        				+ "ㅤAlto desempenho",
+	        		"Ryzen 3",
+	        		"32GB",
+	     			"750W"
+	        ));
 
-		clientes.add(new Cliente(
-		    "Dona Maria",
-		    "Aposentada",
-		    "ㅤInternet\r\n"
-		    + "ㅤReceitas\r\n"
-		    + "ㅤVídeos",
-		    "Athlon",
-		    "8GB",
-		    "500W"
-		));
+	        clientes.add(new Cliente(
+	        		"Dona Maria",
+	        		"Aposentada",
+	        		"ㅤInternet\r\n"
+	        				+ "ㅤReceitas\r\n"
+	        				+ "ㅤVídeos",
+	        		"Athlon",
+	        		"8GB",
+	        		"500W"
+	        ));
 
-		clientes.add(new Cliente(
-		    "Carlos",
-		    "Dono de Mercado",
-		    "ㅤEstoque\r\n"
-		    + "ㅤVendas\r\n"
-		    + "ㅤSistema da loja",
-		    "Intel i3",
-		    "16GB",
-		    "650W"
+	        clientes.add(new Cliente(
+	        		"Carlos",
+	        		"Dono de Mercado",
+	        		"ㅤEstoque\r\n"
+						+ "ㅤVendas\r\n"
+						+ "ㅤSistema da loja",
+						"Intel i3",
+						"16GB",
+						"650W"
 		));
 
 		clientes.add(new Cliente(
