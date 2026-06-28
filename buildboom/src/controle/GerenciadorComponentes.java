@@ -146,7 +146,17 @@ public class GerenciadorComponentes {
         bancoDeDados.add(cpu1);
         bancoDeDados.add(cpu2);
         bancoDeDados.add(cpu3);
-               
+        
+        // ===== PLACA-MÃE =====
+        
+        Componente placa1 = new Componente("ASUS Prime B450M", TipoComponente.PLACA_MAE, "AM4", 3200, 0, 0, 0);
+        Componente placa2 = new Componente("Gigabyte B550M DS3H", TipoComponente.PLACA_MAE, "AM4", 3600, 0, 0, 0);
+        Componente placa3 = new Componente("ASRock H610M", TipoComponente.PLACA_MAE, "LGA1700", 3200, 0, 0, 0);
+
+        bancoDeDados.add(placa1);
+        bancoDeDados.add(placa2);
+        bancoDeDados.add(placa3);
+        
         // ===== MEMÓRIAS RAM =====
         Componente ram1 = new Componente("8GB DDR4 Kingston", TipoComponente.MEMORIA_RAM, "DDR4", 2666,5,0,0);
         Componente ram2 = new Componente("16GB DDR4 Corsair", TipoComponente.MEMORIA_RAM, "DDR4", 3200,5,0,0);
@@ -165,6 +175,14 @@ public class GerenciadorComponentes {
         bancoDeDados.add(fonte2);
         bancoDeDados.add(fonte3);
         
+        // ===== GABINETE =====
+        Componente gabinete1 = new Componente("Gabinete Pichau HX300", TipoComponente.GABINETE, "ATX", 0, 0, 0, 0);
+        Componente gabinete2 = new Componente("Gabinete Gamer Mancer", TipoComponente.GABINETE, "ATX", 0, 0, 0, 0);
+        Componente gabinete3 = new Componente("Gabinete Office Compact", TipoComponente.GABINETE, "MicroATX", 0, 0, 0, 0);
+
+        bancoDeDados.add(gabinete1);
+        bancoDeDados.add(gabinete2);
+       	bancoDeDados.add(gabinete3);
     }
 
     public List<Componente> obterOpcoesParaRodada(int subRodada) {
@@ -173,39 +191,23 @@ public class GerenciadorComponentes {
         TipoComponente tipoBuscado;
 
         switch (subRodada) {
-
-            case 0:
-                tipoBuscado = TipoComponente.PROCESSADOR;
-                break;
-
-            case 1:
-                tipoBuscado = TipoComponente.PLACA_MAE;
-                break;
-
-            case 2:
-                tipoBuscado = TipoComponente.MEMORIA_RAM;
-                break;
-
-            case 3:
-                tipoBuscado = TipoComponente.FONTE;
-                break;
-
-            default:
-                tipoBuscado = TipoComponente.GABINETE;
-                break;
-        }
-
-        case 0:
-            tipoBuscado = TipoComponente.PROCESSADOR;
-            break;
-        case 1:
-            tipoBuscado = TipoComponente.MEMORIA_RAM;
-            break;
-        case 2:
-            tipoBuscado = TipoComponente.FONTE;
-            break;
-        default:
-            return opcoes;
+	        case 0:
+	            tipoBuscado = TipoComponente.PROCESSADOR;
+	            break;
+	        case 1:
+	            tipoBuscado = TipoComponente.PLACA_MAE;
+	            break;
+	        case 2:
+	            tipoBuscado = TipoComponente.MEMORIA_RAM;
+	            break;
+	        case 3:
+	            tipoBuscado = TipoComponente.FONTE;
+	            break;
+	        case 4:
+	            tipoBuscado = TipoComponente.GABINETE;
+	            break;
+	        default:
+	            return opcoes;
     }
         for (Componente c : bancoDeDados) {
             if (c.getTipo() == tipoBuscado) {
@@ -251,26 +253,49 @@ public class GerenciadorComponentes {
 
         return 1;
     //Retorna o componente correto para cada fase
-    public boolean atendePedido(Componente cpu, Componente ram,Componente fonte) {
-
+    public boolean atendePedido(Componente cpu, Componente placa, Componente ram,Componente fonte, Componente gabinete) {
 		if (clienteAtual == null) {
-		return false;
+			return false;
 		}
-		
 		return cpu.getNome().contains(clienteAtual.getProcessadorIdeal())
+				&& placa.getNome().contains(clienteAtual.getPlacaIdeal())
 				&& ram.getNome().contains(clienteAtual.getRamIdeal())
-				&& fonte.getNome().contains(clienteAtual.getFonteIdeal());
-}
-
- // CHAVE: Validação otimizada usando barreiras de guarda (Guard Clauses)
-    public int validarCompatibilidade(Componente cpu, Componente ram, Componente fonte) {
-
-        if (cpu == null || ram == null || fonte == null) {
+				&& fonte.getNome().contains(clienteAtual.getFonteIdeal())
+				&& gabinete.getNome().contains(clienteAtual.getGabineteIdeal());
+    }
+    // Validação otimizada usando barreiras de guarda
+    public int validarCompatibilidade(Componente cpu, Componente placa, Componente ram, Componente fonte, Componente gabinete) {
+    	if (cpu == null || placa == null || ram == null || fonte == null || gabinete == null) {
+    		return INCOMPATIVEL;
+    	}
+        
+        // Socket
+        if (!cpu.getSocket().equals(placa.getSocket())) {
             return INCOMPATIVEL;
         }
-
-        // CPU de maior consumo
         
+        // Frequência da RAM
+        if (ram.getFrequencia() > placa.getFrequencia()) {
+            return INCOMPATIVEL;
+        }
+        
+        // Fonte insuficiente para o pedido do cliente
+        if (clienteAtual != null) {
+
+            if (clienteAtual.getFonteIdeal().contains("750W") && fonte.getPotencia() < 750) {
+                return EXPLODIU;
+            }
+
+            if (clienteAtual.getFonteIdeal().contains("650W") && fonte.getPotencia() < 650) {
+                return EXPLODIU;
+            }
+
+            if (clienteAtual.getFonteIdeal().contains("500W") && fonte.getPotencia() < 500) {
+                return EXPLODIU;
+            }
+        }
+        
+        // Fonte
         if (fonte.getPotencia() < cpu.getConsumo() + MARGEM_SEGURANCA) {
             return EXPLODIU;
         }

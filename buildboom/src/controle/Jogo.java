@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
@@ -30,6 +28,8 @@ public class Jogo extends JPanel implements Runnable {
 	public int EstadoAtual = 0; 
 	public int opçãoSelecionada = -1; 
 	public int faseAtual = 1;
+	public static final int TOTAL_RODADAS = 5;
+	public int rodadaAtual = 0;
 	
 	// Cliente que está sendo atendido atualmente
 	public Cliente clienteAtual;
@@ -40,8 +40,10 @@ public class Jogo extends JPanel implements Runnable {
 	public int resultadoMontagemAtual = 0; // 0 = Não testado, 1 = Sucesso, 2 = Incompatível, 3 = Explodiu
 
 	public Componente componenteEscolhidoCPU = null;
+	public Componente componenteEscolhiPlaca = null;
 	public Componente componenteEscolhidoRAM = null;
 	public Componente componenteEscolhidoFonte = null;
+	public Componente componenteEscolhidoGabinete = null;
 	
 	public Jogo() {
 	        this.setPreferredSize(new Dimension(larguraTela, alturaTela));
@@ -59,7 +61,7 @@ public class Jogo extends JPanel implements Runnable {
 	        this.addMouseListener(tInicial);
 	        this.addMouseMotionListener(tInicial);
 		
-		// Cadastro dos clientes do jogo
+	        // Cadastro dos clientes do jogo
 	        clientes.add(new Cliente(
 	        		"Matheus",
 	        		"Streamer Gamer",
@@ -67,8 +69,10 @@ public class Jogo extends JPanel implements Runnable {
 	        				+ "ㅤStreaming\r\n"
 	        				+ "ㅤAlto desempenho",
 	        		"Ryzen 3",
+	        		"Gigabyte B550M",
 	        		"32GB",
-	     			"750W"
+	     			"750W",
+	     			"Gabinete Gamer"
 	        ));
 
 	        clientes.add(new Cliente(
@@ -78,8 +82,10 @@ public class Jogo extends JPanel implements Runnable {
 	        				+ "ㅤReceitas\r\n"
 	        				+ "ㅤVídeos",
 	        		"Athlon",
+	        		"ASUS Prime B450M",
 	        		"8GB",
-	        		"500W"
+	        		"500W",
+	        		"Gabinete Office"
 	        ));
 
 	        clientes.add(new Cliente(
@@ -88,20 +94,24 @@ public class Jogo extends JPanel implements Runnable {
 	        		"ㅤEstoque\r\n"
 						+ "ㅤVendas\r\n"
 						+ "ㅤSistema da loja",
-						"Intel i3",
-						"16GB",
-						"650W"
+					"Intel i3",
+					"ASRock H610M",
+					"16GB",
+					"650W",
+					"Gabinete Pichau"
 		));
 
 		clientes.add(new Cliente(
-		    "Gabriel",
-		    "Estudante Universitário",
-		    "ㅤEstudos\r\n"
-		    + "ㅤProgramação\r\n"
-		    + "ㅤTrabalhos",
-		    "Ryzen 3",
-		    "16GB",
-		    "500W"
+				"Gabriel",
+				"Estudante Universitário",
+				"ㅤEstudos\r\n"
+						+ "ㅤProgramação\r\n"
+						+ "ㅤTrabalhos",
+				"Ryzen 3",
+				"ASUS Prime B450M",
+				"16GB",
+				"500W",
+				"Gabinete Pichau"
 		));
 		
 		// sorteia um cliente ao iniciar
@@ -195,6 +205,32 @@ public class Jogo extends JPanel implements Runnable {
         this.EstadoAtual = 1;
         this.addMouseListener(tFase);
         this.addMouseMotionListener(tFase);
+        rodadaAtual = 0;
+
+        componenteEscolhidoCPU = null;
+        componenteEscolhiPlaca = null;
+        componenteEscolhidoRAM = null;
+        componenteEscolhidoFonte = null;
+        componenteEscolhidoGabinete = null;
+
+        resultadoMontagemAtual = 0;
         sortearCliente();
+    }
+    
+    public void proximaRodada() {
+        rodadaAtual++;
+
+        if (rodadaAtual >= TOTAL_RODADAS) {
+            resultadoMontagemAtual = gerenciador.validarCompatibilidade(
+                    componenteEscolhidoCPU,
+                    componenteEscolhiPlaca,
+                    componenteEscolhidoRAM,
+                    componenteEscolhidoFonte,
+                    componenteEscolhidoGabinete);
+
+            tFinal.setResultado(resultadoMontagemAtual);
+
+            EstadoAtual = 3;
+        }
     }
 }

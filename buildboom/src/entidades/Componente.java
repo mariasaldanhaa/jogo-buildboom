@@ -10,9 +10,8 @@ public class Componente {
     private int frequenciaMaxRam;
    
 
-    public Componente(String nome, TipoComponente tipo, String socket,
-    		int frequencia, int potencia,int consumo,int frequenciaMaxRam) {
-        
+    public Componente(String nome, TipoComponente tipo, String socket, 
+    				  int frequencia, int potencia,int consumo,int frequenciaMaxRam) {
     	this.nome = nome;
         this.tipo = tipo;
         this.socket = socket;
