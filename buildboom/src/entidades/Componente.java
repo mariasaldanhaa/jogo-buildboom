@@ -1,4 +1,5 @@
 package entidades;
+import java.awt.Image;
 
 public class Componente {
     private String nome;
@@ -8,10 +9,11 @@ public class Componente {
     private int potencia;	// Em Watts (para Fonte)
     private int consumo;
     private int frequenciaMaxRam;
-   
+    private Image imagem;
 
     public Componente(String nome, TipoComponente tipo, String socket, 
-    				  int frequencia, int potencia,int consumo,int frequenciaMaxRam) {
+    				  int frequencia, int potencia,int consumo,int frequenciaMaxRam, 
+    				  Image imagem) {
     	this.nome = nome;
         this.tipo = tipo;
         this.socket = socket;
@@ -19,6 +21,7 @@ public class Componente {
         this.potencia = potencia;
         this.consumo=consumo;
         this.frequenciaMaxRam=frequenciaMaxRam;
+        this.imagem = imagem;
     }
 
     // Getters
@@ -29,6 +32,7 @@ public class Componente {
     public int getPotencia() { return potencia; }
     public int getConsumo() {return consumo;}
     public int getFrequenciaMaxRam() {return frequenciaMaxRam;}
+    public Image getImagem() {return imagem;}
 
     @Override
     public String toString() {

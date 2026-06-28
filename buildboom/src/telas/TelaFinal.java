@@ -15,20 +15,29 @@ public class TelaFinal {
 	int larguraTela;
     int alturaTela;
 	private int resultado;
-	private Image imagemElipse;
+	private Image imagemRetangulo;
+	private Image imagemExplosao;
+	
 	public TelaFinal(Jogo jg) {
 		this.jg=jg;
 		this.meio = larguraTela / 2;
 		this.larguraTela = jg.getLarguraTela();
 	    this.alturaTela = jg.getAlturaTela();
 		try {
-            imagemElipse = new ImageIcon(
-                getClass().getResource("/assets/elipse.png")
+            imagemRetangulo = new ImageIcon(
+                getClass().getResource("/assets/retangulo.png")
             ).getImage();
         } catch (Exception e) {
-            imagemElipse = null;
-            System.out.println("Imagem da elipse não encontrada! Usando texto.");
+            imagemRetangulo = null;
         }
+		
+		try {
+		    imagemExplosao = new ImageIcon(
+		        getClass().getResource("/assets/explosao.png")
+		    ).getImage();
+		} catch (Exception e) {
+		    imagemExplosao = null;
+		}
 	}
 	public void setResultado(int resultado) {
 		this.resultado=resultado;
@@ -36,37 +45,47 @@ public class TelaFinal {
 	public void desenhar(Graphics g2) {
 		int elipseX = (larguraTela - 200) / 2;  
         int elipseY = -100;     
-        int elipseL= 500;
+        int elipseL= 400;
         int elipseA=400;
         int elipseM=elipseL/4;
         // fundo
         g2.setColor(new Color(245, 240, 230));
         g2.fillRect(0, 0, larguraTela, alturaTela);
         
-        //elipse do FIM
-        g2.drawImage(imagemElipse, elipseX - meio-elipseM, elipseY, elipseL, elipseA, null);
+        // retangulo do FIM
+        g2.drawImage(imagemRetangulo, elipseX - meio-elipseM + 30, elipseY, elipseL, elipseA, null);
 		
         //texto FIM
 		g2.setFont(new Font("Arial", Font.BOLD, 75));
 		g2.setColor(Color.white);
-		g2.drawString("Fim", elipseX-meio+75, 135);
+		g2.drawString("Fim", elipseX-meio+65, 130);
 		informarCompatibilidade(g2);
 	}
 	public void informarCompatibilidade(Graphics g2) {
-	    g2.setFont(new Font("Arial", Font.BOLD, 30));
+	    g2.setFont(new Font("Monospaced", Font.BOLD, 30));
 	    g2.setColor(Color.pink);
 
 	    if(resultado == 0){
-	        g2.drawString("Cliente satisfeito", 200, 300);
+	        g2.drawString("RESULTADO: Cliente satisfeito", 200, 350);
 	    }
 	    else if(resultado == 1){
-	        g2.drawString("PC funciona, mas não atende ao pedido", 200, 300);
+	        g2.drawString("RESULTADO: PC funciona, mas não atende ao pedido", 200, 350);
 	    }
 	    else if(resultado == 2){
-	        g2.drawString("Componentes incompatíveis", 200, 300);
+	        g2.drawString("RESULTADO: Componentes incompatíveis", 200, 350);
 	    }
 	    else if(resultado == 3){
-	        g2.drawString("A bancada explodiu", 200, 300);
+	    	if(imagemExplosao != null){
+	    		g2.drawImage(
+	    			    imagemExplosao,
+	    			    0,                 
+	    			    0,                     
+	    			    jg.getLarguraTela(),    
+	    			    jg.getAlturaTela(),    
+	    			    null
+	    		);
+	        }
+	        g2.drawString("RESULTADO: A bancada explodiu", 20, 400);
 	    }
 	}
 }
