@@ -5,10 +5,10 @@ import entidades.Componente;
 import entidades.TipoComponente;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
+import java.awt.Image;
 
 public class GerenciadorComponentes {
-
-    private List<Componente> bancoDeDados;
 	private final List<Componente> bancoDeDados;
 	private Cliente clienteAtual;
 	private static final int MARGEM_SEGURANCA = 100;
@@ -28,120 +28,27 @@ public class GerenciadorComponentes {
         return clienteAtual;
     }
     private void inicializarComponentes() {
-
-        // PROCESSADORES
-        bancoDeDados.add(new Componente(
-                "Ryzen 3 4100",
-                TipoComponente.PROCESSADOR,
-                "AM4",
-                3800,
-                65));
-
-        bancoDeDados.add(new Componente(
-                "Intel i3-12100F",
-                TipoComponente.PROCESSADOR,
-                "LGA1700",
-                4300,
-                58));
-
-        bancoDeDados.add(new Componente(
-                "Athlon 3000G",
-                TipoComponente.PROCESSADOR,
-                "AM4",
-                3500,
-                35));
-
-        // PLACAS-MÃE
-        bancoDeDados.add(new Componente(
-                "ASUS Prime B450M",
-                TipoComponente.PLACA_MAE,
-                "AM4",
-                3200,
-                0));
-
-        bancoDeDados.add(new Componente(
-                "Gigabyte B550M DS3H",
-                TipoComponente.PLACA_MAE,
-                "AM4",
-                3600,
-                0));
-
-        bancoDeDados.add(new Componente(
-                "ASRock H610M",
-                TipoComponente.PLACA_MAE,
-                "LGA1700",
-                3200,
-                0));
-
-        // MEMÓRIAS RAM
-        bancoDeDados.add(new Componente(
-                "8GB DDR4 Kingston",
-                TipoComponente.MEMORIA_RAM,
-                "DDR4",
-                2666,
-                5));
-
-        bancoDeDados.add(new Componente(
-                "16GB DDR4 Corsair",
-                TipoComponente.MEMORIA_RAM,
-                "DDR4",
-                3200,
-                5));
-
-        bancoDeDados.add(new Componente(
-                "32GB DDR4 HyperX",
-                TipoComponente.MEMORIA_RAM,
-                "DDR4",
-                3600,
-                6));
-
-        // FONTES
-        bancoDeDados.add(new Componente(
-                "Fonte 500W Vinik",
-                TipoComponente.FONTE,
-                "ATX",
-                0,
-                500));
-
-        bancoDeDados.add(new Componente(
-                "Fonte 650W Corsair",
-                TipoComponente.FONTE,
-                "ATX",
-                0,
-                650));
-
-        bancoDeDados.add(new Componente(
-                "Fonte 750W EVGA",
-                TipoComponente.FONTE,
-                "ATX",
-                0,
-                750));
-
-        // GABINETES
-        bancoDeDados.add(new Componente(
-                "Gabinete Pichau HX300",
-                TipoComponente.GABINETE,
-                "ATX",
-                0,
-                0));
-
-        bancoDeDados.add(new Componente(
-                "Gabinete Gamer Mancer",
-                TipoComponente.GABINETE,
-                "ATX",
-                0,
-                0));
-
-        bancoDeDados.add(new Componente(
-                "Gabinete Office Compact",
-                TipoComponente.GABINETE,
-                "MicroATX",
-                0,
-                0));
         // ===== PROCESSADORES =====
-        Componente cpu1 = new Componente("Ryzen 3 4100", TipoComponente.PROCESSADOR, "AM4", 3800,0, 65,3200);
-        Componente cpu2 = new Componente("Intel i3-12100F", TipoComponente.PROCESSADOR, "LGA1700", 4300,0, 58,3200);
-        Componente cpu3 = new Componente("Athlon 3000G", TipoComponente.PROCESSADOR, "AM4", 3500,0, 35,2933);
+    	
+    	// imagens dos processadores
+    	
+    	// cpu1
+    	Image imgRyzen = new ImageIcon(
+    	        getClass().getResource("/assets/cpu_ryzen.png")
+    	).getImage();
+        Componente cpu1 = new Componente("Ryzen 3 4100", TipoComponente.PROCESSADOR, "AM4", 3800,0, 65,3200, imgRyzen);
+        
+        // cpu2
+        Image imgIntel = new ImageIcon(
+    	        getClass().getResource("/assets/cpu_intel.png")
+    	).getImage();
+        Componente cpu2 = new Componente("Intel i3-12100F", TipoComponente.PROCESSADOR, "LGA1700", 4300,0, 58,3200, imgIntel);
+        
+        // cpu3
+        Image imgAthlon = new ImageIcon(
+    	        getClass().getResource("/assets/cpu_athlon.png")
+    	).getImage();
+        Componente cpu3 = new Componente("Athlon 3000G", TipoComponente.PROCESSADOR, "AM4", 3500,0, 35,2933, imgAthlon);
         
         bancoDeDados.add(cpu1);
         bancoDeDados.add(cpu2);
@@ -149,36 +56,103 @@ public class GerenciadorComponentes {
         
         // ===== PLACA-MÃE =====
         
-        Componente placa1 = new Componente("ASUS Prime B450M", TipoComponente.PLACA_MAE, "AM4", 3200, 0, 0, 0);
-        Componente placa2 = new Componente("Gigabyte B550M DS3H", TipoComponente.PLACA_MAE, "AM4", 3600, 0, 0, 0);
-        Componente placa3 = new Componente("ASRock H610M", TipoComponente.PLACA_MAE, "LGA1700", 3200, 0, 0, 0);
+        // imagens das placas
+        
+        // placa1
+        Image imgAsus = new ImageIcon(
+    	        getClass().getResource("/assets/placa_asus.png")
+    	).getImage();
+        Componente placa1 = new Componente("ASUS Prime B450M", TipoComponente.PLACA_MAE, "AM4", 3200, 0, 0, 0, imgAsus);
+        
+        // placa2
+        Image imgGigabyte = new ImageIcon(
+    	        getClass().getResource("/assets/placa_gigabyte.png")
+    	).getImage();
+        Componente placa2 = new Componente("Gigabyte B550M DS3H", TipoComponente.PLACA_MAE, "AM4", 3600, 0, 0, 0, imgGigabyte);
+        
+        // placa3
+        Image imgAsrock = new ImageIcon(
+    	        getClass().getResource("/assets/placa_asrock.png")
+    	).getImage();
+        Componente placa3 = new Componente("ASRock H610M", TipoComponente.PLACA_MAE, "LGA1700", 3200, 0, 0, 0, imgAsrock);
 
         bancoDeDados.add(placa1);
         bancoDeDados.add(placa2);
         bancoDeDados.add(placa3);
         
         // ===== MEMÓRIAS RAM =====
-        Componente ram1 = new Componente("8GB DDR4 Kingston", TipoComponente.MEMORIA_RAM, "DDR4", 2666,5,0,0);
-        Componente ram2 = new Componente("16GB DDR4 Corsair", TipoComponente.MEMORIA_RAM, "DDR4", 3200,5,0,0);
-        Componente ram3 = new Componente("32GB DDR4 HyperX", TipoComponente.MEMORIA_RAM, "DDR4", 3600, 6,0,0);
+        
+        // imagens das memórias
+        
+        // RAM1
+        Image img8 = new ImageIcon(
+    	        getClass().getResource("/assets/RAM_8.png")
+    	).getImage();
+        Componente ram1 = new Componente("8GB DDR4 Kingston", TipoComponente.MEMORIA_RAM, "DDR4", 2666,5,0,0, img8);
+        
+        // RAM2
+        Image img16 = new ImageIcon(
+    	        getClass().getResource("/assets/RAM_16.png")
+    	).getImage();
+        Componente ram2 = new Componente("16GB DDR4 Corsair", TipoComponente.MEMORIA_RAM, "DDR4", 3200,5,0,0, img16);
+        
+        // RAM3
+        Image img32 = new ImageIcon(
+    	        getClass().getResource("/assets/RAM_32.png")
+    	).getImage();
+        Componente ram3 = new Componente("32GB DDR4 HyperX", TipoComponente.MEMORIA_RAM, "DDR4", 3600, 6,0,0, img32);
         
         bancoDeDados.add(ram1);
         bancoDeDados.add(ram2);
         bancoDeDados.add(ram3);
             
         // ===== FONTES =====
-        Componente fonte1 = new Componente("Fonte 500W Vinik", TipoComponente.FONTE, "ATX", 0, 500,0,0);
-        Componente fonte2 = new Componente("Fonte 650W Corsair", TipoComponente.FONTE, "ATX", 0, 650,0,0);
-        Componente fonte3 = new Componente("Fonte 750W EVGA", TipoComponente.FONTE, "ATX", 0, 750,0,0);
+        
+        // imagens das fontes
+        
+        // fonte1
+        Image img500 = new ImageIcon(
+    	        getClass().getResource("/assets/fonte500.png")
+    	).getImage();
+        Componente fonte1 = new Componente("Fonte 500W Vinik", TipoComponente.FONTE, "ATX", 0, 500,0,0, img500);
+        
+        // fonte 2
+        Image img650 = new ImageIcon(
+    	        getClass().getResource("/assets/fonte650.png")
+    	).getImage();
+        Componente fonte2 = new Componente("Fonte 650W Corsair", TipoComponente.FONTE, "ATX", 0, 650,0,0, img650);
+        
+        // fonte 3
+        Image img750 = new ImageIcon(
+    	        getClass().getResource("/assets/fonte750.png")
+    	).getImage();
+        Componente fonte3 = new Componente("Fonte 750W EVGA", TipoComponente.FONTE, "ATX", 0, 750,0,0, img750);
         
         bancoDeDados.add(fonte1);
         bancoDeDados.add(fonte2);
         bancoDeDados.add(fonte3);
         
         // ===== GABINETE =====
-        Componente gabinete1 = new Componente("Gabinete Pichau HX300", TipoComponente.GABINETE, "ATX", 0, 0, 0, 0);
-        Componente gabinete2 = new Componente("Gabinete Gamer Mancer", TipoComponente.GABINETE, "ATX", 0, 0, 0, 0);
-        Componente gabinete3 = new Componente("Gabinete Office Compact", TipoComponente.GABINETE, "MicroATX", 0, 0, 0, 0);
+        
+        // imagens dos gabinetes
+        
+        // gabinete 1
+        Image imgPichau = new ImageIcon(
+    	        getClass().getResource("/assets/Gabinete_Pichau.png")
+    	).getImage();
+        Componente gabinete1 = new Componente("Gabinete Pichau HX300", TipoComponente.GABINETE, "ATX", 0, 0, 0, 0, imgPichau);
+        
+        // gabinete 2
+        Image imgGamer = new ImageIcon(
+    	        getClass().getResource("/assets/Gabinete_Gamer.png")
+    	).getImage();
+        Componente gabinete2 = new Componente("Gabinete Gamer Mancer", TipoComponente.GABINETE, "ATX", 0, 0, 0, 0, imgGamer);
+        
+        // gabinete 3
+        Image imgOffice = new ImageIcon(
+    	        getClass().getResource("/assets/Gabinete_Office.png")
+    	).getImage();
+        Componente gabinete3 = new Componente("Gabinete Office Compact", TipoComponente.GABINETE, "MicroATX", 0, 0, 0, 0, imgOffice);
 
         bancoDeDados.add(gabinete1);
         bancoDeDados.add(gabinete2);
@@ -186,7 +160,6 @@ public class GerenciadorComponentes {
     }
 
     public List<Componente> obterOpcoesParaRodada(int subRodada) {
-
         List<Componente> opcoes = new ArrayList<>();
         TipoComponente tipoBuscado;
 
@@ -214,44 +187,9 @@ public class GerenciadorComponentes {
                 opcoes.add(c);
             }
         }
-
         return opcoes;
     }
 
-    public int validarCompatibilidade(
-            Componente cpu,
-            Componente placaMae,
-            Componente ram,
-            Componente fonte,
-            Componente gabinete) {
-
-        if (cpu == null ||
-            placaMae == null ||
-            ram == null ||
-            fonte == null ||
-            gabinete == null) {
-
-            return 2;
-        }
-
-        // Socket incompatível
-        if (!cpu.getSocket().equals(placaMae.getSocket())) {
-            return 2;
-        }
-
-        // RAM acima do suportado pela placa
-        if (ram.getFrequencia() > placaMae.getFrequencia()) {
-            return 2;
-        }
-
-        // Fonte insuficiente
-        int consumoEstimado = cpu.getPotencia() + 150;
-
-        if (fonte.getPotencia() < consumoEstimado) {
-            return 3;
-        }
-
-        return 1;
     //Retorna o componente correto para cada fase
     public boolean atendePedido(Componente cpu, Componente placa, Componente ram,Componente fonte, Componente gabinete) {
 		if (clienteAtual == null) {

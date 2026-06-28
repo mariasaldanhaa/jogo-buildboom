@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 import controle.GerenciadorComponentes;
 import controle.Jogo;
 import entidades.Componente;
-import entidades.TipoComponente;
 import java.util.List;
 
 public class TelaFase extends MouseAdapter {
@@ -349,54 +348,107 @@ public class TelaFase extends MouseAdapter {
             g2.setStroke(new java.awt.BasicStroke(hover ? 3 : 1));
             g2.drawRoundRect(x, y, larguraComponente, alturaComponente, 12, 12);
             
-            // letra do componente
-            Color corCirculo;
-            switch (jg.getFaseAtual()) {
-                case 1: // Processador
-                    corCirculo = new Color(220, 80, 80);
-                    break;
-                case 2: // Placa-mãe
-                    corCirculo = new Color(240, 180, 50);
-                    break;
-                case 3: // RAM
-                    corCirculo = new Color(80, 180, 80);
-                    break;
-                case 4: // Fonte
-                    corCirculo = new Color(80, 130, 220);
-                    break;
-                case 5: // Gabinete
-                    corCirculo = new Color(170, 90, 220);
-                    break;
-                default:
-                    corCirculo = Color.GRAY;
-            }
+            // desenha a imagem do componente
+            // caso não exista, desenha a bolinha com a letra
+            if (comp.getImagem() != null) {
+            	int larguraImagem = 64;
+            	int alturaImagem = 64;
+            	int imgX = x + 48;
+            	int imgY = y + 18;
 
-            g2.setColor(corCirculo);
-            g2.fillOval(x + 45, y + 20, 70, 70);
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 40));
-            
-            String letra = "";
-            switch(jg.getFaseAtual()){
-            case 1:
-                letra = "C"; // CPU
-                break;
-            case 2:
-                letra = "M"; // Placa-mãe
-                break;
-            case 3:
-                letra = "R"; // RAM
-                break;
-            case 4:
-                letra = "F"; // Fonte
-                break;
-            case 5:
-                letra = "G"; // Gabinete
-                break;
+            	switch (comp.getTipo()) {
+            	    case PROCESSADOR:
+            	        larguraImagem = 150;
+            	        alturaImagem = 150;
+            	        imgX = x + 5;
+            	        imgY = y - 15;
+            	        break;
+
+            	    case PLACA_MAE:
+            	        larguraImagem = 155;
+            	        alturaImagem = 155;
+            	        imgX = x + 5;
+            	        imgY = y - 15;
+            	        break;
+
+            	    case MEMORIA_RAM:
+            	        larguraImagem = 130;
+            	        alturaImagem = 130;
+            	        imgX = x + 15;
+            	        imgY = y + 5;
+            	        break;
+
+            	    case FONTE:
+            	        larguraImagem = 190;
+            	        alturaImagem = 190;
+            	        imgX = x - 5;
+            	        imgY = y - 15;
+            	        break;
+
+            	    case GABINETE:
+            	        larguraImagem = 175;
+            	        alturaImagem = 175;
+            	        imgX = x;
+            	        imgY = y - 25;
+            	        break;
+            	}
+
+            	g2.drawImage(
+            	    comp.getImagem(),
+            	    imgX,
+            	    imgY,
+            	    larguraImagem,
+            	    alturaImagem,
+            	    null
+                );
+            } else {      
+	            Color corCirculo;
+	            switch (jg.getFaseAtual()) {
+	                case 1: // Processador
+	                    corCirculo = new Color(220, 80, 80);
+	                    break;
+	                case 2: // Placa-mãe
+	                    corCirculo = new Color(240, 180, 50);
+	                    break;
+	                case 3: // RAM
+	                    corCirculo = new Color(80, 180, 80);
+	                    break;
+	                case 4: // Fonte
+	                    corCirculo = new Color(80, 130, 220);
+	                    break;
+	                case 5: // Gabinete
+	                    corCirculo = new Color(170, 90, 220);
+	                    break;
+	                default:
+	                    corCirculo = Color.GRAY;
+	            }
+	
+	            g2.setColor(corCirculo);
+	            g2.fillOval(x + 45, y + 20, 70, 70);
+	            g2.setColor(Color.WHITE);
+	            g2.setFont(new Font("Arial", Font.BOLD, 40));
+	            
+	            String letra = "";
+	            switch(jg.getFaseAtual()){
+	            case 1:
+	                letra = "P"; // Processador
+	                break;
+	            case 2:
+	                letra = "M"; // Placa-mãe
+	                break;
+	            case 3:
+	                letra = "R"; // RAM
+	                break;
+	            case 4:
+	                letra = "F"; // Fonte
+	                break;
+	            case 5:
+	                letra = "G"; // Gabinete
+	                break;
+	            }
+	            int largLetra = g2.getFontMetrics().stringWidth(letra);
+	            g2.drawString(letra, x + 80 - largLetra/2, y + 72);
             }
-            int largLetra = g2.getFontMetrics().stringWidth(letra);
-            g2.drawString(letra, x + 80 - largLetra/2, y + 72);
-            
             // nome do componente
             g2.setColor(Color.BLACK);
             g2.setFont(new Font("Arial", Font.BOLD, 13));
