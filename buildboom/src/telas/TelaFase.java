@@ -29,8 +29,10 @@ public class TelaFase extends MouseAdapter {
     
     // Armazena os componentes escolhidos
     private Componente componenteCPU = null;
+    private Componente componentePlaca = null;
     private Componente componenteRAM = null;
     private Componente componenteFonte = null;
+    private Componente componenteGabinete = null;
     
     // imagens
     private Image imagemComanda;
@@ -111,28 +113,38 @@ public class TelaFase extends MouseAdapter {
     }
     
     private void selecionarComponente(int index) {
-        List<Componente> opcoes = jg.gerenciador.obterOpcoesParaRodada(
-            jg.getFaseAtual() - 1
-        );
-        
-        if (index < opcoes.size()) {
-            Componente selecionado = opcoes.get(index);
-            int faseAtual = jg.getFaseAtual();
-            
-            // Armazena o componente escolhido conforme a fase
-            if (faseAtual == 1) {
+        List<Componente> opcoes = jg.gerenciador.obterOpcoesParaRodada(jg.getFaseAtual() - 1);
+
+        if (index >= opcoes.size()) return;
+
+        Componente selecionado = opcoes.get(index);
+
+        switch (jg.getFaseAtual()) {
+            case 1:
                 componenteCPU = selecionado;
-                System.out.println("CPU escolhida: " + selecionado.getNome());
+                System.out.println("CPU: " + selecionado.getNome());
                 avancarFase();
-            } else if (faseAtual == 2) {
+                break;
+            case 2:
+                componentePlaca = selecionado;
+                System.out.println("Placa: " + selecionado.getNome());
+                avancarFase();
+                break;
+            case 3:
                 componenteRAM = selecionado;
-                System.out.println("RAM escolhida: " + selecionado.getNome());
+                System.out.println("RAM: " + selecionado.getNome());
                 avancarFase();
-            } else if (faseAtual == 3) {
+                break;
+            case 4:
                 componenteFonte = selecionado;
-                System.out.println("Fonte escolhida: " + selecionado.getNome());
+                System.out.println("Fonte: " + selecionado.getNome());
+                avancarFase();
+                break;
+            case 5:
+                componenteGabinete = selecionado;
+                System.out.println("Gabinete: " + selecionado.getNome());
                 verificarMontagemFinal();
-            }
+                break;
         }
     }
     
@@ -143,22 +155,24 @@ public class TelaFase extends MouseAdapter {
     }
     
     private void verificarMontagemFinal() {
-
-        int resultado = jg.gerenciador.validarCompatibilidade(
-                componenteCPU,
-                componenteRAM,
-                componenteFonte
+    	int resultado = jg.gerenciador.validarCompatibilidade(
+        		        componenteCPU,
+        		        componentePlaca,
+        		        componenteRAM,
+        		        componenteFonte,
+        		        componenteGabinete
         );
 
         jg.resultadoMontagemAtual = resultado;
 
         jg.componenteEscolhidoCPU = componenteCPU;
+        jg.componenteEscolhiPlaca = componentePlaca;
         jg.componenteEscolhidoRAM = componenteRAM;
         jg.componenteEscolhidoFonte = componenteFonte;
-
+        jg.componenteEscolhidoGabinete = componenteGabinete;
 
         if(resultado == GerenciadorComponentes.SUCESSO){
-        		boolean pedidoAtendido =jg.gerenciador.atendePedido(componenteCPU,componenteRAM,componenteFonte);
+        	boolean pedidoAtendido =jg.gerenciador.atendePedido(componenteCPU, componentePlaca, componenteRAM,componenteFonte, componenteGabinete);
 
             if(pedidoAtendido){
                 System.out.println("Cliente satisfeito");
@@ -170,14 +184,14 @@ public class TelaFase extends MouseAdapter {
             }
         }
         else if(resultado == GerenciadorComponentes.INCOMPATIVEL){
-            System.out.println("Componentes incompatíveis");
-            jg.tFinal.setResultado(2);
-        }
-        else{
-            System.out.println("A bancada explodiu");
-            jg.tFinal.setResultado(3);
-        }
-        jg.EstadoAtual = 3;
+        	System.out.println("Componentes incompatíveis");
+        	jg.tFinal.setResultado(2);
+       	}
+       	else {
+       		System.out.println("A bancada explodiu");
+       		jg.tFinal.setResultado(3);
+       	}
+       	jg.EstadoAtual = 3;
     }
     
     @Override
@@ -289,13 +303,26 @@ public class TelaFase extends MouseAdapter {
             
             int fase = jg.getFaseAtual();
             String tipoComponente = "";
-            if (fase == 1) {
+            
+            // escrita para cada fase
+            switch(fase){
+            case 1:
                 tipoComponente = "o Processador";
-            } else if (fase == 2) {
+                break;
+            case 2:
+                tipoComponente = "a Placa-mãe";
+                break;
+            case 3:
                 tipoComponente = "a Memória RAM";
-            } else if (fase == 3) {
+                break;
+            case 4:
                 tipoComponente = "a Fonte";
+                break;
+            case 5:
+                tipoComponente = "o Gabinete";
+                break;
             }
+            
             g2.drawString("Escolha " + tipoComponente, 470, ty - 235);
             ty += 28;
         }
@@ -324,19 +351,49 @@ public class TelaFase extends MouseAdapter {
             
             // letra do componente
             Color corCirculo;
-            if (jg.getFaseAtual() == 1) corCirculo = new Color(220, 80, 80);
-            else if (jg.getFaseAtual() == 2) corCirculo = new Color(80, 180, 80);
-            else corCirculo = new Color(80, 130, 220);
-            
+            switch (jg.getFaseAtual()) {
+                case 1: // Processador
+                    corCirculo = new Color(220, 80, 80);
+                    break;
+                case 2: // Placa-mãe
+                    corCirculo = new Color(240, 180, 50);
+                    break;
+                case 3: // RAM
+                    corCirculo = new Color(80, 180, 80);
+                    break;
+                case 4: // Fonte
+                    corCirculo = new Color(80, 130, 220);
+                    break;
+                case 5: // Gabinete
+                    corCirculo = new Color(170, 90, 220);
+                    break;
+                default:
+                    corCirculo = Color.GRAY;
+            }
+
             g2.setColor(corCirculo);
             g2.fillOval(x + 45, y + 20, 70, 70);
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Arial", Font.BOLD, 40));
             
-            String letra;
-            if (i == 0) letra = "R";
-            else if (i == 1) letra = "I";
-            else letra = "A";
+            String letra = "";
+            switch(jg.getFaseAtual()){
+            case 1:
+                letra = "C"; // CPU
+                break;
+            case 2:
+                letra = "M"; // Placa-mãe
+                break;
+            case 3:
+                letra = "R"; // RAM
+                break;
+            case 4:
+                letra = "F"; // Fonte
+                break;
+            case 5:
+                letra = "G"; // Gabinete
+                break;
+            }
             int largLetra = g2.getFontMetrics().stringWidth(letra);
             g2.drawString(letra, x + 80 - largLetra/2, y + 72);
             
@@ -361,12 +418,22 @@ public class TelaFase extends MouseAdapter {
             g2.setFont(new Font("Arial", Font.PLAIN, 12));
             g2.setColor(new Color(100, 100, 100));
             String specs = "";
-            if (comp.getTipo() == TipoComponente.PROCESSADOR) {
+            switch(comp.getTipo()){
+            case PROCESSADOR:
+                specs = comp.getSocket();
+                break;
+            case PLACA_MAE:
+                specs = comp.getSocket();
+                break;
+            case MEMORIA_RAM:
                 specs = comp.getFrequencia() + " MHz";
-            } else if (comp.getTipo() == TipoComponente.MEMORIA_RAM) {
-                specs = comp.getFrequencia() + " MHz";
-            } else if (comp.getTipo() == TipoComponente.FONTE) {
+                break;
+            case FONTE:
                 specs = comp.getPotencia() + "W";
+                break;
+            case GABINETE:
+                specs = comp.getSocket();
+                break;
             }
             int largSpecs = g2.getFontMetrics().stringWidth(specs);
             g2.drawString(specs, x + (larguraComponente - largSpecs)/2, y + 168);
